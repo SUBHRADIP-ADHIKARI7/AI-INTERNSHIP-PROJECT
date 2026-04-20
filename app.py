@@ -1212,6 +1212,19 @@ Output the JSON array now:"""
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/fast-extract-skills', methods=['POST'])
+def fast_extract_skills():
+    if 'resume' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+    try:
+        file = request.files['resume']
+        from mock_interview import extract_text_from_pdf, extract_skills
+        text = extract_text_from_pdf(file.stream)
+        skills = extract_skills(text)
+        return jsonify({"extractedSkills": skills})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # ──────────────────────────────────────────────
 # Run the server
 # ──────────────────────────────────────────────

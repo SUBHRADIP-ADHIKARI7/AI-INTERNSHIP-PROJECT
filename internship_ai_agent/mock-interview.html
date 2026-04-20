@@ -41,6 +41,14 @@ body{font-family:'Outfit',sans-serif;background:#0b0d17;color:var(--text);min-he
 }
 .complete-profile-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
 
+/* New Resume Upload Zone */
+.upload-zone { background:rgba(6,182,212,0.05); border:2px dashed rgba(6,182,212,0.3); border-radius:16px; padding:2rem; text-align:center; cursor:pointer; transition:all 0.3s; margin-bottom:1.5rem; }
+.upload-zone:hover { background:rgba(6,182,212,0.08); border-color:rgba(6,182,212,0.5); transform:translateY(-2px); }
+.upload-zone.dragging { background:rgba(6,182,212,0.15); border-color:var(--cyan); }
+.upload-zone .analyze-icon { font-size:2.2rem; margin-bottom:0.5rem; }
+.upload-zone .analyze-title { font-size:1.3rem; font-weight:800; margin-bottom:0.3rem; }
+.upload-zone .analyze-hint { color:var(--muted); font-size:0.9rem; max-width:400px; margin:0 auto; line-height:1.4; }
+
 .header-text{text-align:center;margin-bottom:1.5rem}
 .header-text h1{font-size:2.8rem;font-weight:800;margin-bottom:.5rem;letter-spacing:-0.02em}
 .header-text p{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto;line-height:1.5}
@@ -244,10 +252,11 @@ body{font-family:'Outfit',sans-serif;background:#0b0d17;color:var(--text);min-he
         </div>
       </div>
 
-      <div class="analyze-box" onclick="analyzeSavedResume()">
-        <div class="analyze-icon">📄✨</div>
-        <div class="analyze-title">Analyze Saved Resume</div>
-        <div class="analyze-hint">We securely stored the resume you uploaded when you signed in. Click here to instantly scan it for technical skills and roles.</div>
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('resumeInput').click()">
+        <input type="file" id="resumeInput" accept=".pdf" style="display:none" onchange="handleResumeUpload(event)">
+        <div class="analyze-icon">📄⬆️</div>
+        <div class="analyze-title">Upload & Analyze Resume</div>
+        <div class="analyze-hint" id="uploadHint">Upload your PDF resume to instantly extract skills and launch a personalized AI interview.</div>
       </div>
 
       <button class="action-btn btn-primary" onclick="startInterview(false)">
@@ -801,15 +810,24 @@ body{font-family:'Outfit',sans-serif;background:#0b0d17;color:var(--text);min-he
     }
   }
 
-  function analyzeSavedResume() {
+  async function handleResumeUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    document.getElementById('uploadHint').innerHTML = "<span style='color:var(--cyan)'>⏳ Analyzing PDF... please wait.</span>";
+    document.getElementById('resumeInput').disabled = true;
+
+    const formData = new FormData();
+    formData.append('resume', file);
+
     try {
-      let rawUser = localStorage.getItem('user');
-      if (!rawUser || rawUser === "undefined" || rawUser === "null") {
-        rawUser = '{}';
-      }
-      const userData = JSON.parse(rawUser);
-      let skills = userData.extractedSkills || userData.skills;
+      const response = await fetch('/api/fast-extract-skills', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
       
+      let skills = data.extractedSkills || data.skills || [];
       if (typeof skills === 'string') {
         skills = skills.split(',').map(s => s.trim()).filter(Boolean);
       }
@@ -819,14 +837,32 @@ body{font-family:'Outfit',sans-serif;background:#0b0d17;color:var(--text);min-he
          sessionStorage.setItem('mock_skills', JSON.stringify(userSkills));
          startInterview(true);
       } else {
-         console.warn("No saved resume skills found in localStorage. Proceeding to general interview.");
+         console.warn("No skills extracted. Proceeding to general interview.");
          startInterview(false);
       }
     } catch(err) {
-      console.error("Resume analysis error:", err);
+      console.error("Resume upload error:", err);
+      // Fallback
       startInterview(false);
     }
   }
+
+  // Setup Drag and Drop
+  document.addEventListener("DOMContentLoaded", () => {
+    const dropZone = document.getElementById('uploadZone');
+    if(dropZone) {
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragging'); });
+      dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('dragging'); });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragging');
+        if (e.dataTransfer.files.length) {
+          document.getElementById('resumeInput').files = e.dataTransfer.files;
+          handleResumeUpload({target: {files: e.dataTransfer.files}});
+        }
+      });
+    }
+  });
 
   function startInterview(hasSkills) {
     // Bypass difficulty screen entirely. Jump straight to the Camera Modal!
