@@ -9,6 +9,7 @@ An intelligent, conversational AI agent built with Flask, LangChain, and OpenAI 
 - **Live Internship Data:** Uses the RapidAPI Internships API to fetch real, up-to-date internship postings worldwide.
 - **Live Speaking Avatar:** Integrated with Akool Streaming Avatar and Agora RTC to provide a visually engaging, speaking AI assistant.
 - **Beautiful UI:** A dark-themed, glassmorphism single-page frontend with smooth animations.
+- **AI Mock Interview Pro:** A complete virtual interview experience using webcam proctoring directly in your browser.
 
 ---
 
