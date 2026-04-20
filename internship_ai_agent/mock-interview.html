@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Mock Interview Pro — InternAI</title>
+<!-- MediaPipe Vision IIFE bundle - exposes window.vision -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.js" crossorigin="anonymous"></script>
+<!-- Ace Editor -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark:#0a0c16;--surface:rgba(255,255,255,.03);--surface-hover:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.08);
+  --accent:#8b5cf6;--cyan:#06b6d4;--text:rgba(255,255,255,.9);--muted:rgba(255,255,255,.5);
+}
+body{font-family:'Outfit',sans-serif;background:#0b0d17;color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* Background Gradients */
+.bg-blobs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse at -5% 40%, rgba(151, 32, 199, 0.72) 0%, transparent 60%),
+    radial-gradient(ellipse at 105% 60%, rgba(19, 26, 219, 0.94) 0%, transparent 55%);
+}
+
+/* Container */
+.container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:2rem 1.5rem}
+
+/* Header */
+.top-nav{display:flex;justify-content:flex-end;margin-bottom:2rem}
+.complete-profile-btn{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  padding:.4rem 1rem;border-radius:20px;color:#f59e0b;font-size:.85rem;font-weight:600;
+  display:flex;align-items:center;gap:.4rem;cursor:pointer;transition:all .3s
+}
+.complete-profile-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)}
+
+.header-text{text-align:center;margin-bottom:1.5rem}
+.header-text h1{font-size:2.8rem;font-weight:800;margin-bottom:.5rem;letter-spacing:-0.02em}
+.header-text p{color:var(--muted);font-size:1.05rem;max-width:500px;margin:0 auto;line-height:1.5}
+
+/* Main Panel */
+.main-panel{
+  background:rgba(18,20,36,.6); backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:20px;padding:2rem;box-shadow:0 30px 60px rgba(0,0,0,.4)
+}
+
+/* Feature Cards */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:1.5rem}
+.feat-card{
+  background:#131524;border:1px solid rgba(255,255,255,.03);border-radius:12px;
+  padding:1.4rem 1.2rem;text-align:center;transition:all .3s
+}
+.feat-card:hover{background:#1a1c2e;transform:translateY(-2px)}
+.feat-icon{font-size:1.6rem;color:var(--accent);margin-bottom:.6rem;display:inline-block;border:1.5px solid var(--accent);border-radius:50%;width:44px;height:44px;line-height:41px}
+.feat-card h3{font-size:.95rem;font-weight:700;margin-bottom:.3rem;color:#e2e8f0;letter-spacing:0.02em}
+.feat-card p{font-size:.75rem;color:var(--muted);line-height:1.4}
+
+/* Analyze Saved Resume Box */
+.analyze-box{
+  border:2px solid rgba(139,92,246,.3);border-radius:12px;
+  background:rgba(139,92,246,.05);padding:3rem 2rem;text-align:center;margin-bottom:1.5rem;
+  transition:all .3s;cursor:pointer;position:relative;overflow:hidden;
+}
+.analyze-box:hover{border-color:rgba(139,92,246,.6);background:rgba(139,92,246,.1);transform:translateY(-2px);box-shadow:0 10px 30px rgba(139,92,246,.15)}
+.analyze-icon{font-size:2.8rem;margin-bottom:.8rem;display:inline-block;filter:drop-shadow(0 0 10px rgba(139,92,246,.6));animation:pulse-glow 2s infinite}
+@keyframes pulse-glow { 0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(139,92,246,.4)); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(139,92,246,.8)); } 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(139,92,246,.4)); } }
+.analyze-title{font-size:1.4rem;font-weight:800;margin-bottom:.4rem;color:#fff}
+.analyze-hint{font-size:.9rem;color:var(--muted);max-width:400px;margin:0 auto}
+
+/* Action Buttons */
+.action-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:.6rem;
+  padding:.9rem;border-radius:8px;font-family:inherit;font-size:.9rem;font-weight:700;
+  cursor:pointer;transition:all .3s ease;text-decoration:none;border:none
+}
+.btn-primary{
+  background:linear-gradient(90deg,#7c51ff,#a16fff);color:#fff;margin-bottom:.8rem;box-shadow:0 8px 20px rgba(139,92,246,.2)
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(139,92,246,.35)}
+.btn-secondary{
+  background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.1);
+}
+.btn-secondary:hover{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.2)}
+
+/* Screens */
+.screen{display:none;animation:fade-in .4s ease}
+.screen.active{display:block}
+@keyframes fade-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Scanning overlay */
+.scan-overlay{
+  position:absolute;inset:0;background:rgba(18,20,38,.8);backdrop-filter:blur(8px);
+  border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:10;opacity:0;pointer-events:none;transition:opacity .3s
+}
+.scan-overlay.show{opacity:1;pointer-events:all}
+.spinner{width:40px;height:40px;border:3px solid rgba(123,97,255,.3);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:1.5rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scan-txt{font-size:1.1rem;font-weight:600;color:#fff}
+
+/* History Screen */
+.history-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; transition:all .3s }
+.history-card:hover { background:var(--surface-hover); transform:translateY(-2px); }
+.history-info h4 { font-size:1.1rem; font-weight:700; margin-bottom:.3rem; color:#fff; }
+.history-info p { font-size:.85rem; color:var(--muted); }
+.history-score { font-size:1.6rem; font-weight:800; color:var(--cyan); text-shadow:0 0 15px rgba(6,182,212,.4); }
+
+.diff-card { cursor: pointer; transition:all .3s; padding:2.5rem 1.8rem!important; text-align:center; height:100%; border-radius: 24px; background: rgba(22,24,40,0.35)!important; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 20px 40px rgba(0,0,0,0.2), inset 0 0 20px rgba(255,255,255,0.02); overflow:hidden; position:relative; }
+.diff-card::before { content:''; position:absolute; inset:0; border-radius:24px; padding:1px; background:linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0)); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events:none; }
+.diff-card:hover { transform: translateY(-4px); box-shadow: 0 25px 50px rgba(0,0,0,0.4), inset 0 0 30px rgba(255,255,255,0.04); }
+.diff-sub { font-size: 0.65rem; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 1rem; text-transform: uppercase; }
+.diff-card p { font-size: .8rem; color: #a1a1aa; line-height: 1.6; }
+
+/* Camera Permission Modal */
+.cam-modal-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.7); backdrop-filter: blur(12px); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.cam-modal-overlay.show { opacity: 1; pointer-events: all; }
+.cam-modal { background: rgba(18,20,36,0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 3rem 2.5rem; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
+.cam-modal-icon { font-size: 4rem; margin-bottom: 1rem; }
+.cam-modal h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 0.6rem; }
+.cam-modal p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; }
+.cam-modal-btns { display: flex; gap: 1rem; justify-content: center; }
+.cam-allow-btn { flex: 1; padding: 0.85rem; border-radius: 10px; border: none; background: linear-gradient(90deg, #7c51ff, #a16fff); color: #fff; font-family: inherit; font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
+.cam-allow-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(139,92,246,0.4); }
+.cam-deny-btn { flex: 1; padding: 0.85rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--muted); font-family: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
+.cam-deny-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
+
+/* Proctoring UI */
+.vid-container {
+  position: relative; width: 100%; max-width: 600px; margin: 0 auto; 
+  border-radius: 20px; overflow: hidden; background: #000; border: 2px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+#webcam { width: 100%; display: block; transform: scaleX(-1); }
+#canvas-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; transform: scaleX(-1); }
+
+.hud-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.strike-badge { background: rgba(239,68,68,0.1); border: 1px solid #ef4444; color: #ef4444; padding: 0.5rem 1.2rem; border-radius: 20px; font-weight: 800; font-size: 0.95rem; transition: all 0.3s; }
+.strike-bg-warn { background: rgba(245,158,11,0.1); border-color: #f59e0b; color: #f59e0b; }
+.strike-bg-ok { background: rgba(16,185,129,0.1); border-color: #10b981; color: #10b981; }
+
+.camera-check-box { text-align: center; padding: 2rem; }
+.camera-check-box .video-wrapper { width: 280px; height: 280px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.5rem; border: 4px solid var(--accent); box-shadow: 0 0 30px rgba(139,92,246,0.3); }
+.camera-check-box video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+
+.question-box { background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.2); padding: 1.5rem; border-radius: 16px; margin-top: 1rem; color: #e2e8f0; font-size: 1.05rem; line-height: 1.6; backdrop-filter: blur(10px); }
+
+/* Interview Room Panels */
+.room-layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; align-items: start; }
+.room-cam-panel { display: flex; flex-direction: column; gap: 1rem; }
+.room-vid-container { position:relative; border-radius:16px; overflow:hidden; background:#000; border:2px solid rgba(255,255,255,0.1); box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+.room-vid-container video { width:100%; display:block; transform:scaleX(-1); }
+.room-hud { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0.8rem; background:rgba(0,0,0,0.3); border-radius:0 0 14px 14px; margin-top:-4px; }
+.q-progress { font-size:0.75rem; font-weight:700; color:var(--muted); }
+
+.room-main { display:flex; flex-direction:column; gap:1rem; flex:1; min-width:0; }
+.ai-label { font-weight:800; color:var(--accent); font-size:0.75rem; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.3rem; display:flex; align-items:center; gap:0.5rem; justify-content: space-between; }
+.speaking-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); animation:blink-dot 0.8s infinite; display:inline-block; }
+@keyframes blink-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
+.question-text-box { background:rgba(139,92,246,0.06); border:1px solid rgba(139,92,246,0.2); padding:1.5rem; border-radius:16px; font-size:1.1rem; line-height:1.7; min-height:80px; }
+
+/* Coding Editor */
+.code-editor-wrapper { margin-top:0.5rem; border:1px solid rgba(255,255,255,0.1); border-radius:12px; overflow:hidden; display:none; }
+#ace-editor { height: 250px; width: 100%; border-radius:12px; }
+.coding-badge { background:rgba(6,182,212,0.15); color:var(--cyan); padding:0.2rem 0.6rem; border-radius:6px; font-size:0.7rem; font-weight:700; display:inline-block; border:1px solid rgba(6,182,212,0.3); }
+
+.answer-area { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:1.2rem; }
+.answer-label { font-size:0.75rem; font-weight:700; color:var(--muted); letter-spacing:1px; margin-bottom:0.6rem; }
+.answer-transcript { min-height:60px; color:#e2e8f0; font-size:0.95rem; line-height:1.6; }
+.placeholder-text { color:rgba(255,255,255,0.25); font-style:italic; }
+
+.mic-btn { width:64px; height:64px; border-radius:50%; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.6rem; transition:all 0.3s; margin:0.8rem auto; }
+.mic-btn.idle { background:linear-gradient(135deg,#7c51ff,#a16fff); box-shadow:0 8px 20px rgba(139,92,246,0.4); }
+.mic-btn.recording { background:linear-gradient(135deg,#ef4444,#f97316); box-shadow:0 8px 20px rgba(239,68,68,0.5); animation:pulse-rec 1s infinite; }
+@keyframes pulse-rec { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+.mic-hint { text-align:center; font-size:0.75rem; color:var(--muted); }
+
+.next-btn { width:100%; padding:0.8rem; border-radius:10px; border:none; background:linear-gradient(90deg,#7c51ff,#a16fff); color:#fff; font-family:inherit; font-weight:800; font-size:1rem; cursor:pointer; transition:all 0.3s; }
+.next-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(139,92,246,0.4); }
+.next-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+.loading-questions { text-align:center; padding:3rem; }
+.loading-questions .spinner { width:50px; height:50px; border:4px solid rgba(139,92,246,0.2); border-top:4px solid var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 1.2rem; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+@media(max-width:768px){
+  .features-grid{grid-template-columns:1fr}
+  .main-panel{padding:2rem 1.5rem}
+  .history-card { flex-direction:column; align-items:flex-start; gap:1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-blobs"></div>
+
+<div class="container">
+  <!-- START SCREEN -->
+  <div class="screen active" id="s-start">
+    <div class="top-nav">
+      <a href="/profile" class="complete-profile-btn" style="text-decoration:none">✍️ Complete Profile</a>
+    </div>
+
+    <div class="header-text">
+      <h1>AI Mock Interview Pro</h1>
+      <p>Simulate real-world tech interviews, get evaluated instantly, and accelerate your career prep using AI.</p>
+    </div>
+
+    <div class="main-panel" style="position:relative">
+      
+      <div class="scan-overlay" id="scanOverlay">
+        <div class="spinner"></div>
+        <div class="scan-txt" id="scanMsg">Analyzing Resume Skills...</div>
+      </div>
+
+      <div class="features-grid">
+        <div class="feat-card">
+          <div class="feat-icon" style="border:none">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:8px"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+          </div>
+          <h3>Voice Interview</h3>
+          <p>Speak your answers<br>naturally</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="border:none">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:8px"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>
+          </div>
+          <h3>AI Evaluation</h3>
+          <p>Instant scoring &amp;<br>feedback</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="border:none">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:8px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="8" y2="16"></line><line x1="16" y1="10" x2="16" y2="16"></line></svg>
+          </div>
+          <h3>Skill-Based</h3>
+          <p>Questions from your<br>resume</p>
+        </div>
+      </div>
+
+      <div class="analyze-box" onclick="analyzeSavedResume()">
+        <div class="analyze-icon">📄✨</div>
+        <div class="analyze-title">Analyze Saved Resume</div>
+        <div class="analyze-hint">We securely stored the resume you uploaded when you signed in. Click here to instantly scan it for technical skills and roles.</div>
+      </div>
+
+      <button class="action-btn btn-primary" onclick="startInterview(false)">
+        🪄 Skip Resume &amp; Start General Interview →
+      </button>
+      <button class="action-btn btn-secondary" onclick="showHistory()">
+        View Past Interview History
+      </button>
+    </div>
+  </div>
+
+  <!-- HISTORY SCREEN -->
+  <div class="screen" id="s-history">
+    <div class="top-nav">
+      <div class="complete-profile-btn" onclick="goToStep('s-start')">← Back to Menu</div>
+    </div>
+    
+    <div class="header-text">
+      <h1>Interview History</h1>
+      <p>Review your past performances and track your progress over time.</p>
+    </div>
+
+    <div class="main-panel" style="max-height:650px; overflow-y:auto;">
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+
+
+  <!-- CUSTOM CAMERA PERMISSION MODAL -->
+  <div class="cam-modal-overlay" id="cam-modal-overlay">
+    <div class="cam-modal">
+      <div class="cam-modal-icon">📷</div>
+      <h2>Camera Access Required</h2>
+      <p>This mock interview uses AI to proctor your session in real-time. Your webcam feed is needed to detect head movements and ensure exam integrity.</p>
+      <div class="cam-modal-btns">
+        <button class="cam-allow-btn" onclick="onCameraAllow()">✅ Allow Access</button>
+        <button class="cam-deny-btn" onclick="onCameraDeny()">✖ Deny</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN INTERVIEW ROOM -->
+  <div class="screen" id="s-room">
+    <div class="hud-panel" style="margin-bottom:1rem">
+      <div class="complete-profile-btn" onclick="forceEndInterview()" style="background:rgba(239,68,68,0.1); border-color:#ef4444; color:#ef4444">Exit Room</div>
+      <div id="violation-badge" class="strike-badge strike-bg-ok">⚠️ Violations: 0/3</div>
+    </div>
+
+    <!-- Loading state -->
+    <div id="room-loading" class="loading-questions">
+      <div class="spinner"></div>
+      <p style="color:var(--muted)">Generating your personalized <strong id="loading-diff-label">Medium</strong> interview questions from your skills...</p>
+    </div>
+
+    <!-- Interview Layout (hidden until questions load) -->
+    <div id="room-content" style="display:none">
+      <div class="room-layout">
+        <!-- Left: Camera Feed -->
+        <div class="room-cam-panel">
+          <div class="room-vid-container" id="video-container">
+            <video id="webcam" autoplay playsinline muted></video>
+            <canvas id="canvas-overlay"></canvas>
+            <div class="room-hud">
+              <span class="q-progress" id="q-progress-label">Q 0/5</span>
+              <span style="font-size:0.7rem; color:#ef4444">🔴 REC</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Question + Answer -->
+        <div class="room-main">
+          <div>
+            <div class="ai-label">
+              <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span class="speaking-dot" id="speaking-dot" style="display:none"></span>
+                AI Interviewer
+              </div>
+              <span id="coding-badge" class="coding-badge" style="display:none">👨‍💻 CODING CHALLENGE</span>
+            </div>
+            <div class="question-text-box" id="ai-question-text">Loading question...</div>
+          </div>
+
+          <!-- Code Editor -->
+          <div class="code-editor-wrapper" id="code-editor-wrapper">
+             <div id="ace-editor"></div>
+          </div>
+
+          <div class="answer-area">
+            <div class="answer-label">YOUR ANSWER</div>
+            <div class="answer-transcript" id="answer-transcript">
+              <span class="placeholder-text" id="answer-placeholder">Click the microphone below and speak your answer...</span>
+            </div>
+          </div>
+
+          <div style="text-align:center">
+            <button class="mic-btn idle" id="mic-btn" onclick="toggleMic()">🎤</button>
+            <div class="mic-hint" id="mic-hint">Tap to answer</div>
+          </div>
+
+          <button class="next-btn" id="next-btn" onclick="nextQuestion()" disabled>Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMINATED SCREEN -->
+  <div class="screen" id="s-terminated">
+    <div class="main-panel" style="text-align:center; padding: 4rem 2rem;">
+      <div style="font-size: 5rem; margin-bottom: 1rem;">🛑</div>
+      <h1 style="color: #ef4444; margin-bottom: 1rem; font-size: 2.5rem; font-weight:900;">Interview Terminated</h1>
+      <p style="color: var(--muted); margin-bottom: 2.5rem; max-width: 450px; margin-left:auto; margin-right:auto; line-height:1.6; font-size:1.1rem">
+        The AI proctor detected excessive head movement off-screen (3 violations). Your session has been automatically invalidated and ended.
+      </p>
+      <button class="action-btn btn-secondary" style="max-width:300px; margin:0 auto;" onclick="goToStep('s-start')">Return to Dashboard</button>
+    </div>
+  </div>
+</div>
+
+  <script type="module">
+    import { FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.js";
+    window.FaceLandmarker = FaceLandmarker;
+    window.FilesetResolver = FilesetResolver;
+  </script>
+  
+  <script>
+  let userSkills = [];
+  
+  let videoStream = null;
+  let faceLandmarker = null;
+  let webcamRunning = false;
+  let violationsCount = 0;
+  let warningTimer = 0;
+  
+  function showCameraModal() {
+    document.getElementById('cam-modal-overlay').classList.add('show');
+  }
+
+  function hideCameraModal() {
+    document.getElementById('cam-modal-overlay').classList.remove('show');
+  }
+
+  function onCameraAllow() {
+    hideCameraModal();
+    startProctoredRoom();
+  }
+
+  function onCameraDeny() {
+    hideCameraModal();
+    alert("You cannot take this mock interview exam without granting camera access.");
+  }
+
+  async function loadProctoringModel() {
+    try {
+      const visionLib = window.vision;
+      if (!visionLib || !visionLib.FilesetResolver || !visionLib.FaceLandmarker) {
+        setTimeout(loadProctoringModel, 1000);
+        return;
+      }
+      if (faceLandmarker) return;
+      const filesetResolver = await visionLib.FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm");
+      faceLandmarker = await visionLib.FaceLandmarker.createFromOptions(filesetResolver, {
+        baseOptions: {
+          modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+          delegate: "GPU"
+        },
+        outputFaceBlendshapes: false,
+        runningMode: "VIDEO",
+        numFaces: 1
+      });
+      console.log("FaceLandmarker loaded successfully!");
+    } catch(modelErr) {
+      console.warn("MediaPipe model error:", modelErr);
+    }
+  }
+
+  // === INTERVIEW QUESTION STATE ===
+  let questions = [];
+  let currentQ = 0;
+  let answers = [];
+  let recognition = null;
+  let isRecording = false;
+  let lastVideoTime = -1;
+  let aceInstance = null; // store Ace Editor instance
+  const roomVideo = document.getElementById('webcam');
+  const canvasOverlay = document.getElementById('canvas-overlay');
+
+  async function startProctoredRoom() {
+    goToStep('s-room');
+    
+    // Set UI to loading state immediately
+    const difficulty = sessionStorage.getItem('mock_difficulty') || 'Medium';
+    document.getElementById('loading-diff-label').textContent = difficulty;
+    document.getElementById('room-loading').style.display = 'block';
+    // Update loading text to reflect camera init
+    document.getElementById('room-loading').querySelector('p').innerHTML = `Connecting to camera & generating personalized <strong>${difficulty}</strong> questions...`;
+    document.getElementById('room-content').style.display = 'none';
+
+    // 1. Get Camera
+    if (!videoStream) {
+      try {
+        videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      } catch(err) {
+        alert("Camera Access Denied! Cannot start the interview.");
+        goToStep('s-difficulty');
+        return;
+      }
+    }
+    // 2. Start Model Load in Background (fast fail if already loading)
+    loadProctoringModel();
+
+    // 3. Setup Video Stream and Detection Loop
+    roomVideo.srcObject = videoStream;
+    webcamRunning = true;
+    violationsCount = 0;
+    warningTimer = 0;
+    lastVideoTime = -1;
+    updateViolationHUD();
+    requestAnimationFrame(predictWebcam);
+
+    // 4. Load questions from API simultaneously
+    const difficulty = sessionStorage.getItem('mock_difficulty') || 'Medium';
+    document.getElementById('loading-diff-label').textContent = difficulty;
+    document.getElementById('room-loading').style.display = 'block';
+    document.getElementById('room-content').style.display = 'none';
+
+    fetch('/api/interview/generate-questions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ skills: userSkills, difficulty: difficulty, count: 5 })
+    })
+    .then(r => r.json())
+    .then(data => {
+      questions = data.questions || [];
+      currentQ = 0;
+      answers = [];
+      document.getElementById('room-loading').style.display = 'none';
+      document.getElementById('room-content').style.display = 'block';
+      showQuestion(0);
+    })
+    .catch(err => {
+      console.error('Failed to load questions:', err);
+      questions = [
+        {"text": "Tell me about yourself and your technical background.", "is_coding": false},
+        {"text": "Describe a challenging project you worked on and how you overcame obstacles.", "is_coding": false},
+        {"text": "Write a function that reverses an array in-place.", "is_coding": true},
+        {"text": "Explain your problem-solving methodology.", "is_coding": false},
+        {"text": "Where do you see yourself professionally in the next 2 years?", "is_coding": false}
+      ];
+      currentQ = 0;
+      answers = [];
+      document.getElementById('room-loading').style.display = 'none';
+      document.getElementById('room-content').style.display = 'block';
+      showQuestion(0);
+    });
+  }
+
+  function showQuestion(index) {
+    if (index >= questions.length) { endInterview(); return; }
+    currentQ = index;
+    const qObj = questions[index];
+    const qText = typeof qObj === 'string' ? qObj : qObj.text;
+    const isCoding = typeof qObj === 'string' ? false : !!qObj.is_coding;
+
+    document.getElementById('ai-question-text').textContent = qText;
+    document.getElementById('q-progress-label').textContent = `Q ${index+1}/5`;
+
+    // Handle Editor display
+    const editorWrapper = document.getElementById('code-editor-wrapper');
+    const codingBadge = document.getElementById('coding-badge');
+    
+    if (isCoding) {
+      editorWrapper.style.display = 'block';
+      codingBadge.style.display = 'inline-block';
+      if (!aceInstance) {
+        aceInstance = ace.edit("ace-editor");
+        aceInstance.setTheme("ace/theme/tomorrow_night_eighties");
+        aceInstance.session.setMode("ace/mode/javascript");
+        aceInstance.setOptions({
+          fontSize: "14px",
+          showPrintMargin: false,
+          vScrollBarAlwaysVisible: true
+        });
+        // When typing in code editor, enable the Next button automatically
+        aceInstance.session.on('change', () => {
+          document.getElementById('next-btn').disabled = false;
+        });
+      }
+      aceInstance.setValue("// Write your code here based on the question above.\n// You can also use the microphone to explain your thought process.\n\n", -1);
+    } else {
+      editorWrapper.style.display = 'none';
+      codingBadge.style.display = 'none';
+    }
+
+    // Reset answer area
+    document.getElementById('answer-transcript').innerHTML = '<span class="placeholder-text" id="answer-placeholder">Click the microphone below and speak your answer...</span>';
+    // If it's a coding question, we disable "Next" until they either code or speak
+    document.getElementById('next-btn').disabled = true;
+    document.getElementById('next-btn').textContent = index < questions.length - 1 ? 'Next Question →' : 'Finish Interview ✓';
+
+    // Speak the question
+    speakQuestion(qText);
+  }
+
+  function speakQuestion(text) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 0.92;
+    utter.pitch = 0.85;
+    utter.volume = 1;
+
+    // Prefer a male English voice
+    const voices = window.speechSynthesis.getVoices();
+    const maleVoice = voices.find(v => /male/i.test(v.name) && /en/i.test(v.lang))
+      || voices.find(v => /david|mark|james|alex|daniel|google uk english male/i.test(v.name))
+      || voices.find(v => /en/i.test(v.lang));
+    if (maleVoice) utter.voice = maleVoice;
+
+    const dot = document.getElementById('speaking-dot');
+    utter.onstart  = () => { if(dot) dot.style.display = 'inline-block'; };
+    utter.onend    = () => { if(dot) dot.style.display = 'none'; };
+    utter.onerror  = () => { if(dot) dot.style.display = 'none'; };
+
+    window.speechSynthesis.speak(utter);
+  }
+
+  // Voices may load async — re-expose after they load
+  window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+
+  function toggleMic() {
+    if (isRecording) stopMic();
+    else startMic();
+  }
+
+  function startMic() {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) {
+      alert("Speech recognition is not supported in your browser. Please use Chrome.");
+      return;
+    }
+    window.speechSynthesis.cancel(); // Stop TTS if still speaking
+
+    recognition = new SpeechRec();
+    recognition.lang       = 'en-US';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    let finalTranscript = '';
+
+    recognition.onstart = () => {
+      isRecording = true;
+      document.getElementById('mic-btn').className = 'mic-btn recording';
+      document.getElementById('mic-hint').textContent = '🔴 Recording... Tap to stop';
+      document.getElementById('answer-transcript').innerHTML = '<span style="color:#f59e0b">Listening...</span>';
+    };
+
+    recognition.onresult = (event) => {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript + ' ';
+        else interim += event.results[i][0].transcript;
+      }
+      document.getElementById('answer-transcript').innerHTML =
+        (finalTranscript || '') + `<span style="color:rgba(255,255,255,0.4)">${interim}</span>`;
+    };
+
+    recognition.onend = () => {
+      isRecording = false;
+      document.getElementById('mic-btn').className = 'mic-btn idle';
+      document.getElementById('mic-hint').textContent = 'Tap to re-record';
+      if (finalTranscript.trim()) {
+        answers[currentQ] = finalTranscript.trim();
+        document.getElementById('next-btn').disabled = false;
+      }
+    };
+
+    recognition.onerror = (e) => {
+      console.error('Speech recognition error:', e.error);
+      isRecording = false;
+      document.getElementById('mic-btn').className = 'mic-btn idle';
+      document.getElementById('mic-hint').textContent = 'Tap to answer';
+    };
+
+    recognition.start();
+  }
+
+  function stopMic() {
+    if (recognition) recognition.stop();
+  }
+
+  function nextQuestion() {
+    stopMic();
+    
+    // Save coding answer if available
+    const qObj = questions[currentQ];
+    const isCoding = typeof qObj !== 'string' && qObj.is_coding;
+    if (isCoding && aceInstance) {
+      const codeValue = aceInstance.getValue();
+      if (!answers[currentQ]) {
+         answers[currentQ] = { spoken: "", code: codeValue };
+      } else {
+         answers[currentQ] = { spoken: answers[currentQ], code: codeValue };
+      }
+    }
+    
+    showQuestion(currentQ + 1);
+  }
+
+  function endInterview() {
+    stopMic();
+    webcamRunning = false;
+    window.speechSynthesis.cancel();
+    if (videoStream) videoStream.getTracks().forEach(t => t.stop());
+
+    // Save to localStorage history
+    const record = {
+      date: new Date().toLocaleDateString(),
+      difficulty: sessionStorage.getItem('mock_difficulty') || 'Medium',
+      score: Math.floor(60 + Math.random() * 30),
+      skills: userSkills.slice(0, 3).join(', ')
+    };
+    const history = JSON.parse(localStorage.getItem('interviewHistory') || '[]');
+    history.unshift(record);
+    localStorage.setItem('interviewHistory', JSON.stringify(history.slice(0, 10)));
+
+    goToStep('s-terminated');
+    document.querySelector('#s-terminated .main-panel').innerHTML = `
+      <div style="font-size:4rem;margin-bottom:1rem">🎉</div>
+      <h1 style="color:#10b981;margin-bottom:1rem;font-size:2.2rem;font-weight:900">Interview Complete!</h1>
+      <p style="color:var(--muted);max-width:420px;margin:0 auto 1.5rem;line-height:1.6">
+        You completed all 5 questions for the <strong>${record.difficulty}</strong> level interview. Great job staying focused!
+      </p>
+      <div style="font-size:3rem;font-weight:900;color:#a16fff;margin-bottom:0.3rem">${record.score}%</div>
+      <div style="color:var(--muted);font-size:0.85rem;margin-bottom:2.5rem">Estimated Score</div>
+      <button class="action-btn btn-primary" style="max-width:300px;margin:0 auto" onclick="goToStep('s-start')">Return to Dashboard</button>
+    `;
+  }
+
+  async function predictWebcam() {
+    if (!webcamRunning) return;
+    
+    let startTimeMs = performance.now();
+    if (lastVideoTime !== roomVideo.currentTime && faceLandmarker) {
+      lastVideoTime = roomVideo.currentTime;
+      const results = faceLandmarker.detectForVideo(roomVideo, startTimeMs);
+
+      if (results.faceLandmarks && results.faceLandmarks.length > 0) {
+        const lm = results.faceLandmarks[0];
+
+        // === CHECK 1: FACE YAW (Head Turn) ===
+        // Nose tip vs left/right cheek edges — if nose drifts >30% of face width it's a turn
+        const nose    = lm[1];
+        const leftEar = lm[234];
+        const rightEar= lm[454];
+        const faceCenterX = (leftEar.x + rightEar.x) / 2;
+        const faceWidth   = Math.abs(rightEar.x - leftEar.x);
+        const noseOffset  = Math.abs(nose.x - faceCenterX);
+        const faceViolation = noseOffset > (faceWidth * 0.30);
+
+        // === CHECK 2: EYE IRIS (Gaze Deviation) ===
+        // Left iris: lm[468], Left eye corners: lm[33](inner) lm[133](outer)
+        // Right iris: lm[473], Right eye corners: lm[362](inner) lm[263](outer)
+        let eyeViolation = false;
+
+        if (lm[468] && lm[473]) { // iris landmarks only present if outputFacialTransformationMatrixes = true, but 468/473 ARE in base face landmarker
+          // Left eye gaze
+          const leftEyeInner  = lm[133];
+          const leftEyeOuter  = lm[33];
+          const leftIris      = lm[468];
+          const leftEyeCenter = (leftEyeInner.x + leftEyeOuter.x) / 2;
+          const leftEyeWidth  = Math.abs(leftEyeInner.x - leftEyeOuter.x);
+          const leftGazeOff   = Math.abs(leftIris.x - leftEyeCenter);
+
+          // Right eye gaze
+          const rightEyeInner = lm[362];
+          const rightEyeOuter = lm[263];
+          const rightIris     = lm[473];
+          const rightEyeCenter= (rightEyeInner.x + rightEyeOuter.x) / 2;
+          const rightEyeWidth = Math.abs(rightEyeInner.x - rightEyeOuter.x);
+          const rightGazeOff  = Math.abs(rightIris.x - rightEyeCenter);
+
+          // Both eyes must be looking away >30% for eye violation (avoids false positives from blinking)
+          if (leftEyeWidth > 0 && rightEyeWidth > 0) {
+            eyeViolation = (leftGazeOff > leftEyeWidth * 0.30) && (rightGazeOff > rightEyeWidth * 0.30);
+          }
+        }
+
+        triggerWarningFrame(faceViolation || eyeViolation, faceViolation, eyeViolation);
+      } else {
+        // No face detected at all
+        triggerWarningFrame(true, false, false);
+      }
+    }
+
+    window.requestAnimationFrame(predictWebcam);
+  }
+
+
+  function triggerWarningFrame(isViolating, isFaceViolation, isEyeViolation) {
+    const badge = document.getElementById('violation-badge');
+    const container = document.getElementById('video-container');
+
+    if (isViolating) {
+      warningTimer++;
+      if (warningTimer > 40) { // ~1.5 seconds sustained — register violation
+        registerViolation();
+        warningTimer = 0;
+      } else if (warningTimer > 15) { // ~0.5s warning window
+        container.style.borderColor = "#f59e0b";
+        badge.className = "strike-badge strike-bg-warn";
+        if (!isViolating) { /* fine */ }
+        else if (isFaceViolation && isEyeViolation) badge.textContent = "⚠️ Face & Eyes off screen!";
+        else if (isFaceViolation) badge.textContent = "⚠️ Look straight — face turned!";
+        else if (isEyeViolation) badge.textContent = "⚠️ Keep eyes on screen!";
+        else badge.textContent = "⚠️ Face not detected!";
+      }
+    } else {
+      warningTimer = 0;
+      container.style.borderColor = "rgba(255,255,255,0.1)";
+      updateViolationHUD();
+    }
+  }
+
+  function registerViolation() {
+    violationsCount++;
+    updateViolationHUD();
+    
+    const container = document.getElementById('video-container');
+    container.style.borderColor = "#ef4444";
+    
+    if (violationsCount >= 3) {
+      forceEndInterview();
+    }
+  }
+
+  function updateViolationHUD() {
+    const badge = document.getElementById('violation-badge');
+    badge.className = "strike-badge " + (violationsCount > 0 ? "strike-bg-warn" : "strike-bg-ok");
+    badge.innerHTML = "⚠️ Violations: " + violationsCount + " / 3";
+  }
+
+  function forceEndInterview() {
+    webcamRunning = false;
+    if (videoStream) {
+      videoStream.getTracks().forEach(track => track.stop());
+    }
+    if (violationsCount >= 3) {
+      goToStep('s-terminated');
+    } else {
+      goToStep('s-start');
+    }
+  }
+
+  function analyzeSavedResume() {
+    try {
+      let rawUser = localStorage.getItem('user');
+      if (!rawUser || rawUser === "undefined" || rawUser === "null") {
+        rawUser = '{}';
+      }
+      const userData = JSON.parse(rawUser);
+      let skills = userData.extractedSkills || userData.skills;
+      
+      if (typeof skills === 'string') {
+        skills = skills.split(',').map(s => s.trim()).filter(Boolean);
+      }
+
+      if (skills && Array.isArray(skills) && skills.length > 0) {
+         userSkills = skills;
+         sessionStorage.setItem('mock_skills', JSON.stringify(userSkills));
+         startInterview(true);
+      } else {
+         console.warn("No saved resume skills found in localStorage. Proceeding to general interview.");
+         startInterview(false);
+      }
+    } catch(err) {
+      console.error("Resume analysis error:", err);
+      startInterview(false);
+    }
+  }
+
+  function startInterview(hasSkills) {
+    // Bypass difficulty screen entirely. Jump straight to the Camera Modal!
+    startActualInterview('Medium');
+  }
+  function goToStep(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function showHistory() {
+    const list = document.getElementById('historyList');
+    try {
+      const hist = JSON.parse(localStorage.getItem('interviewHistory') || '[]');
+      if (hist.length === 0) {
+        list.innerHTML = '<p style="text-align:center;color:var(--muted);padding:3rem 0;font-size:1.1rem">No past interviews found. Start your first mock interview today!</p>';
+      } else {
+        list.innerHTML = hist.map(h => `
+          <div class="history-card">
+            <div class="history-info">
+              <h4>${h.role || 'General Interview'}</h4>
+              <p>${h.date || 'Unknown Date'} at ${h.time || h.date} • ${h.questions || 5} Questions • Diff: ${h.difficulty || 'Medium'}</p>
+            </div>
+            <div class="history-score">${h.score || 0}%</div>
+          </div>
+        `).join('');
+      }
+    } catch(e) {
+      list.innerHTML = '<p style="text-align:center;color:var(--muted)">Could not load history.</p>';
+    }
+    goToStep('s-history');
+  }
+
+  function startActualInterview(diff) {
+    sessionStorage.setItem('mock_difficulty', diff);
+    showCameraModal();
+  }
+</script>
+</body>
+</html>

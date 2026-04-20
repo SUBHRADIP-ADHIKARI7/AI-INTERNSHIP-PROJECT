@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — InternAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{--cyan:#00f0ff;--violet:#7000ff;--pink:#ff007b;--green:#00e4b8;--dark:#080812;--border:rgba(255,255,255,.08);--glass:rgba(255,255,255,.04)}
+  body{font-family:'Outfit',sans-serif;background:var(--dark);color:#fff;min-height:100vh;overflow-x:hidden}
+
+  /* ── Background ── */
+  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .bgb{position:absolute;border-radius:50%;filter:blur(120px);animation:drift 25s ease-in-out infinite alternate}
+  .bg1{width:500px;height:500px;background:var(--violet);top:-10%;left:-8%;opacity:.35}
+  .bg2{width:400px;height:400px;background:var(--cyan);bottom:-15%;right:-8%;opacity:.3;animation-delay:-12s}
+  @keyframes drift{0%{transform:translate(0,0)}100%{transform:translate(60px,80px)}}
+
+  /* ── Sidebar ── */
+  .sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:rgba(8,8,18,.85);backdrop-filter:blur(20px);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:2rem 1.5rem;z-index:10;box-shadow:4px 0 30px rgba(0,0,0,.4)}
+  .brand{display:flex;align-items:center;gap:.6rem;margin-bottom:3rem;padding:.8rem 1rem;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--border)}
+  .brand span{font-size:1.6rem;filter:drop-shadow(0 0 8px var(--cyan))}
+  .brand h2{font-size:1.15rem;font-weight:800;background:linear-gradient(90deg,#fff,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .nav-section{font-size:.72rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.08em;padding:0 .5rem;margin-bottom:.6rem}
+  .nav-item{display:flex;align-items:center;gap:.8rem;padding:.85rem 1rem;margin-bottom:.3rem;border-radius:14px;text-decoration:none;color:rgba(255,255,255,.5);font-size:.95rem;font-weight:600;transition:all .3s ease;border:1px solid transparent}
+  .nav-item:hover{color:#fff;background:rgba(255,255,255,.05);border-color:var(--border)}
+  .nav-item.active{color:#fff;background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2);box-shadow:0 0 20px rgba(0,240,255,.08)}
+  .nav-item .ic{font-size:1.1rem;width:22px;text-align:center}
+  .logout{margin-top:auto;display:flex;align-items:center;gap:.7rem;padding:.85rem 1rem;border-radius:14px;cursor:pointer;color:rgba(255,255,255,.4);font-size:.95rem;font-weight:600;border:1px solid rgba(255,255,255,.05);background:transparent;font-family:inherit;transition:all .3s ease;text-decoration:none}
+  .logout:hover{color:var(--pink);border-color:rgba(255,0,123,.3);background:rgba(255,0,123,.05)}
+
+  /* ── Main ── */
+  .main{margin-left:260px;min-height:100vh;padding:2.5rem 3rem;position:relative;z-index:1}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:3rem}
+  .topbar h1{font-size:2rem;font-weight:800}
+  .topbar h1 span{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .user-pill{display:flex;align-items:center;gap:.8rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:40px;padding:.5rem 1.2rem .5rem .6rem}
+  .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--pink));display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800}
+  .user-name{font-size:.9rem;font-weight:600;color:rgba(255,255,255,.75)}
+
+  /* ── Stats ── */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-bottom:2.5rem}
+  .stat-card{padding:1.8rem;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.01));backdrop-filter:blur(16px);border:1px solid var(--border);border-top:1px solid rgba(255,255,255,.15);box-shadow:0 15px 35px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .3s ease,box-shadow .3s ease}
+  .stat-card:hover{transform:translateY(-5px);box-shadow:0 25px 50px rgba(0,0,0,.5)}
+  .stat-icon{font-size:1.8rem;margin-bottom:.8rem}
+  .stat-val{font-size:2.4rem;font-weight:900;margin-bottom:.2rem;line-height:1;transition:all .5s ease}
+  .stat-label{font-size:.82rem;color:rgba(255,255,255,.4);font-weight:500}
+  .s1 .stat-val{color:var(--cyan)}
+  .s2 .stat-val{color:var(--green)}
+  .s3 .stat-val{color:var(--violet)}
+  .s4 .stat-val{color:var(--pink)}
+
+  /* ── Grid ── */
+  .content-grid{display:grid;grid-template-columns:2fr 1fr;gap:2rem}
+  .panel{padding:2rem;border-radius:24px;background:rgba(255,255,255,.03);border:1px solid var(--border);backdrop-filter:blur(16px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+  .panel-title{font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem}
+  .panel-title::before{content:'';width:3px;height:1.1rem;border-radius:2px;background:var(--cyan);display:block}
+
+  /* ── Matches List ── */
+  .match-item{display:flex;align-items:center;gap:1rem;padding:1rem;margin-bottom:.8rem;border-radius:16px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.04);transition:all .3s ease;cursor:pointer;text-decoration:none;color:inherit}
+  .match-item:hover{background:rgba(255,255,255,.05);border-color:rgba(0,240,255,.2);transform:translateX(5px)}
+  .co{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;color:#fff;flex-shrink:0;box-shadow:3px 3px 10px rgba(0,0,0,.5),inset 1px 1px 2px rgba(255,255,255,.2)}
+  .co-grad-0{background:linear-gradient(135deg,#4285f4,#34a853)}
+  .co-grad-1{background:linear-gradient(135deg,#0668e1,#0ea5e9)}
+  .co-grad-2{background:linear-gradient(135deg,#6366f1,#8b5cf6)}
+  .co-grad-3{background:linear-gradient(135deg,#555,#333)}
+  .co-grad-4{background:linear-gradient(135deg,#e50914,#b20710)}
+  .co-grad-5{background:linear-gradient(135deg,#f97316,#ea580c)}
+  .co-grad-6{background:linear-gradient(135deg,#00a4ef,#0078d4)}
+  .co-grad-7{background:linear-gradient(135deg,#10b981,#059669)}
+  .co-grad-8{background:linear-gradient(135deg,#ec4899,#db2777)}
+  .co-grad-9{background:linear-gradient(135deg,#f59e0b,#d97706)}
+  .ji h4{font-size:.95rem;font-weight:700;margin-bottom:2px}
+  .ji p{font-size:.78rem;color:rgba(255,255,255,.4)}
+  .score{margin-left:auto;font-size:.8rem;font-weight:700;color:var(--cyan);border:1px solid rgba(0,240,255,.25);padding:.3rem .7rem;border-radius:20px;white-space:nowrap;background:rgba(0,240,255,.07)}
+
+  /* ── Quick Actions ── */
+  .quick-btn{width:100%;padding:1rem 1.2rem;margin-bottom:1rem;border-radius:16px;border:none;font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;text-align:left;display:flex;align-items:center;gap:.7rem;text-decoration:none;transition:all .3s ease;background:rgba(255,255,255,.04);color:rgba(255,255,255,.75);border:1px solid var(--border);box-shadow:inset 0 1px 1px rgba(255,255,255,.07),0 4px 12px rgba(0,0,0,.3)}
+  .quick-btn:hover{transform:translateX(5px);background:rgba(255,255,255,.07);color:#fff;border-color:rgba(255,255,255,.15)}
+  .quick-btn.primary-q{background:rgba(0,240,255,.08);color:var(--cyan);border-color:rgba(0,240,255,.2)}
+  .quick-btn.primary-q:hover{background:rgba(0,240,255,.14);box-shadow:0 0 16px rgba(0,240,255,.15)}
+  .upload-btn{border:1px dashed rgba(0,240,255,.3)!important;background:rgba(0,240,255,.04)!important;color:var(--cyan)!important}
+  .upload-btn:hover{border-color:rgba(0,240,255,.7)!important;background:rgba(0,240,255,.09)!important}
+
+  /* ── Skills Chips ── */
+  .skills-wrap{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.5rem}
+  .skill-chip{font-size:.95rem;font-weight:600;padding:.6rem 1.2rem;border-radius:24px;background:rgba(112,0,255,.15);border:1px solid rgba(112,0,255,.3);color:#c4aaff;letter-spacing:0.3px}
+
+  /* ── Resume Upload Modal ── */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal{background:linear-gradient(135deg,rgba(30,20,60,.96),rgba(8,8,18,.98));border:1px solid rgba(255,255,255,.12);border-top:1px solid rgba(255,255,255,.22);border-radius:28px;padding:2.5rem;width:100%;max-width:520px;box-shadow:0 40px 80px rgba(0,0,0,.7);position:relative;animation:modal-in .35s cubic-bezier(.16,1,.3,1)}
+  @keyframes modal-in{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  .modal-close{position:absolute;top:1.2rem;right:1.2rem;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);font-size:1rem;transition:all .2s;font-family:inherit}
+  .modal-close:hover{background:rgba(255,0,123,.15);border-color:rgba(255,0,123,.4);color:var(--pink)}
+  .modal h3{font-size:1.5rem;font-weight:800;margin-bottom:.4rem}
+  .modal-sub{color:rgba(255,255,255,.4);font-size:.9rem;margin-bottom:2rem}
+
+  /* Drop Zone */
+  .drop-zone{border:2px dashed rgba(0,240,255,.25);border-radius:20px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .3s ease;background:rgba(0,240,255,.02);position:relative}
+  .drop-zone.drag-over{border-color:var(--cyan);background:rgba(0,240,255,.07);box-shadow:0 0 30px rgba(0,240,255,.12)}
+  .drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+  .dz-icon{font-size:3rem;margin-bottom:1rem;display:block;filter:drop-shadow(0 0 12px rgba(0,240,255,.4))}
+  .dz-text{font-size:1rem;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:.3rem}
+  .dz-sub{font-size:.82rem;color:rgba(255,255,255,.3)}
+
+  /* File selected preview */
+  .file-preview{display:none;align-items:center;gap:.8rem;margin-top:1rem;padding:.8rem 1.2rem;border-radius:14px;background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.2)}
+  .file-preview.show{display:flex}
+  .file-preview span{font-size:.9rem;color:var(--cyan);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rm-file{background:none;border:none;cursor:pointer;color:var(--pink);font-size:1rem;flex-shrink:0;font-family:inherit}
+
+  /* Analyze button */
+  .analyze-btn{width:100%;margin-top:1.5rem;padding:1.1rem;border:none;border-radius:16px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;position:relative;overflow:hidden;background:linear-gradient(180deg,#00d8e8,#008ea0);color:#001f25;box-shadow:inset 0 2px 3px rgba(255,255,255,.5),inset 0 -4px 6px rgba(0,0,0,.25),0 10px 25px rgba(0,240,255,.3);transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:.6rem}
+  .analyze-btn:hover{transform:translateY(-2px);box-shadow:inset 0 2px 3px rgba(255,255,255,.5),0 0 24px rgba(0,240,255,.4),0 14px 30px rgba(0,0,0,.5)}
+  .analyze-btn:active{transform:translateY(4px)}
+  .analyze-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .a-spin{width:18px;height:18px;border:3px solid rgba(0,31,37,.3);border-top-color:#001f25;border-radius:50%;animation:sp 1s linear infinite;display:none}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .analyze-btn.loading .a-spin{display:block}
+  .analyze-btn.loading span{opacity:.5}
+
+  /* Progress bar during analysis */
+  .progress-wrap{display:none;margin-top:1.2rem}
+  .progress-wrap.show{display:block}
+  .progress-label{font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:.5rem}
+  .progress-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:2px;transition:width .5s ease;width:0%}
+
+  /* Loading skeleton */
+  .skel{background:linear-gradient(90deg,rgba(255,255,255,.05) 25%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.05) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+  /* Fade-in on update */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .fade-up{animation:fadeUp .4s ease forwards}
+
+  /* Number counter animation */
+  .count-anim{display:inline-block}
+
+  /* Toast */
+  .toast{position:fixed;bottom:2rem;right:2rem;z-index:200;padding:1rem 1.5rem;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(8,8,18,.95);backdrop-filter:blur(16px);box-shadow:0 20px 40px rgba(0,0,0,.5);display:none;align-items:center;gap:.8rem;font-size:.9rem;font-weight:600;max-width:350px}
+  .toast.show{display:flex;animation:fadeUp .4s ease}
+  .toast.success{border-color:rgba(0,228,184,.3);color:var(--green)}
+  .toast.error{border-color:rgba(255,0,123,.3);color:var(--pink)}
+
+  @media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}.content-grid{grid-template-columns:1fr}}
+  @media(max-width:800px){.sidebar{display:none}.main{margin-left:0;padding:1.5rem}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bgb bg1"></div><div class="bgb bg2"></div></div>
+
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="brand"><span>🤖</span><h2>InternAI</h2></div>
+  <div class="nav-section">Main</div>
+  <a class="nav-item active" href="/user-dashboard"><span class="ic">🏠</span> Dashboard</a>
+  <a class="nav-item" href="/dashboard"><span class="ic">💬</span> AI Assistant</a>
+  <a class="nav-item" href="/mock-interview/"><span class="ic">🎤</span> Mock Interview</a>
+  <div class="nav-section" style="margin-top:1.5rem">Settings</div>
+  <a class="nav-item" href="/profile"><span class="ic">⚙️</span> Profile / Preferences</a>
+  <a href="/" class="logout"><span class="ic">🚪</span> Sign Out</a>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+  <div class="topbar">
+    <h1>Good morning, <span id="greetName">User</span> 👋</h1>
+    <div class="user-pill"><div class="av">U</div><span class="user-name">user@email.com</span></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+
+    <div class="stat-card s2">
+      <div class="stat-icon" style="color:var(--green)">✅</div>
+      <div class="stat-val" id="stat-interviews">—</div>
+      <div class="stat-label">Estimated from Skills</div>
+    </div>
+    <div class="stat-card s3">
+      <div class="stat-icon" style="color:var(--violet)">⚡</div>
+      <div class="stat-val" id="stat-avgscore">—</div>
+      <div class="stat-label">Avg Match Score</div>
+    </div>
+    <div class="stat-card s4">
+      <div class="stat-icon" style="color:var(--pink)">🔥</div>
+      <div class="stat-val" id="stat-streak">—</div>
+      <div class="stat-label">Skills Detected</div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="content-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+
+    <!-- Left Column: Skills -->
+    <div class="panel" id="skillsPanel">
+      <div class="panel-title">Your Detected Skills</div>
+      <div id="skillsContent" style="color:rgba(255,255,255,.35);font-size:.88rem;padding:.5rem 0">
+        Upload a resume to auto-detect your skills using AI.
+      </div>
+    </div>
+
+    <!-- Right Column: Quick Actions -->
+    <div class="panel">
+      <div class="panel-title">Quick Actions</div>
+      <a href="/dashboard" class="quick-btn primary-q">💬 Ask AI Assistant</a>
+      <a href="/mock-interview/" class="quick-btn">🎤 Start Mock Interview</a>
+      <button class="quick-btn" id="openUploadBtn" style="border-color:var(--green)!important; background:rgba(0,228,184,.05)!important; color:var(--green)!important">✅ Analyze Saved Resume</button>
+      <div style="font-size:.78rem;color:rgba(255,255,255,.25);padding:0 .5rem;margin-top:-.5rem;margin-bottom:.5rem;">Uses the resume you uploaded during sign-up</div>
+      <a href="/dashboard" class="quick-btn">🔍 Browse All Jobs</a>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // ─── Greeting ────────────────────────────────────
+  const h = new Date().getHours();
+  const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  document.querySelector('.topbar h1').innerHTML = `${greet}, <span id="greetName">User</span> 👋`;
+
+  const openBtn = document.getElementById('openUploadBtn');
+
+  // ─── Color Gradients for company logos ───────────
+  const gradients = ['co-grad-0','co-grad-1','co-grad-2','co-grad-3','co-grad-4','co-grad-5','co-grad-6','co-grad-7','co-grad-8','co-grad-9'];
+
+  // ─── Animate Number Counter ──────────────────────
+  function animateCount(el, target, suffix='') {
+    const start = 0, duration = 1000, step = 16, steps = duration / step, inc = target / steps;
+    let current = start;
+    const timer = setInterval(() => {
+      current = Math.min(current + inc, target);
+      el.textContent = Math.round(current) + suffix;
+      if(current >= target) clearInterval(timer);
+    }, step);
+  }
+
+  // ─── Build Match Items ────────────────────────────
+  function buildMatchItem(job, idx) {
+    const letter = (job.title || 'J').charAt(0).toUpperCase();
+    const grad = gradients[idx % gradients.length];
+    const url = job.url && job.url.length > 5 ? job.url : '#';
+    return `
+      <a class="match-item fade-up" href="${url}" target="_blank" rel="noopener" style="animation-delay:${idx*0.06}s">
+        <div class="co ${grad}">${letter}</div>
+        <div class="ji">
+          <h4>${escHtml(job.title)}</h4>
+          <p>${escHtml(job.company)} · ${escHtml(job.mode)}</p>
+        </div>
+        <div class="score">${job.matchScore}%</div>
+      </a>`;
+  }
+  function escHtml(str) { return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // ─── Build Skills Chips ───────────────────────────
+  function buildSkills(skills) { return '<div class="skills-wrap">' + skills.map(s => `<span class="skill-chip">${escHtml(s)}</span>`).join('') + '</div>'; }
+
+  // ─── Toast ───────────────────────────────────────
+  function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.textContent = (type==='success'?'✅ ':'❌ ') + msg;
+    t.className = `toast show ${type}`;
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+
+  // ─── Analyze Submit ───────────────────────────────
+  openBtn.addEventListener('click', async () => {
+    const sid = localStorage.getItem('session_id');
+    if(!sid) { showToast('No saved resume found. Please log in again.', 'error'); return; }
+
+    openBtn.innerHTML = '⏳ Analyzing...';
+    openBtn.disabled = true;
+    showToast('Analyzing your saved resume...', 'success');
+
+    const form = new FormData();
+    form.append('session_id', sid);
+
+    try {
+      const res = await fetch('/api/dashboard/analyze-resume', { method: 'POST', body: form });
+      if(!res.ok) throw new Error("Server error");
+      const data = await res.json();
+
+      if(data.error) { showToast(data.error, 'error'); return; }
+
+      // ── Update Stats ──
+      const statMatched = document.getElementById('stat-matched');
+      const statInt = document.getElementById('stat-interviews');
+      const statAvg = document.getElementById('stat-avgscore');
+      const statStreak = document.getElementById('stat-streak');
+
+      if(statMatched) { statMatched.classList.add('fade-up'); animateCount(statMatched, data.stats.matchedInternships || 0); }
+      if(statInt) animateCount(statInt, data.stats.interviewsCompleted || 0);
+      if(statAvg) statAvg.textContent = (data.stats.avgMatchScore || 0) + '%';
+      if(statStreak) animateCount(statStreak, (data.skills || []).length);
+
+      // ── Update Matches ──
+      const matchesList = document.getElementById('matchesList');
+      if (matchesList) {
+        if(data.topMatches && data.topMatches.length > 0) {
+          matchesList.innerHTML = data.topMatches.map((j, i) => buildMatchItem(j, i)).join('');
+        } else {
+          matchesList.innerHTML = `
+            <div style="text-align:center;padding:2rem;color:rgba(255,255,255,.3)">
+              <div>No internship listings found for your skill set.</div>
+              <div style="font-size:.8rem;margin-top:.4rem">Try a different resume or check your internet connection.</div>
+            </div>`;
+        }
+      }
+
+      // ── Update Skills ──
+      const sc = document.getElementById('skillsContent');
+      sc.innerHTML = data.skills && data.skills.length ? 
+        `<div style="font-size:.82rem;color:rgba(255,255,255,.4);margin-bottom:.5rem">Role: <strong style="color:#fff">${escHtml(data.role)}</strong></div>` + buildSkills(data.skills)
+        : '<span style="color:rgba(255,255,255,.3)">No skills detected.</span>';
+
+      showToast(`Found ${data.stats.matchedInternships} matches!`);
+
+    } catch(err) {
+      showToast('Network error — is the server running?', 'error');
+    } finally {
+      openBtn.innerHTML = '✅ Analyze Saved Resume';
+      openBtn.disabled = false;
+    }
+  });
+</script>
+
+<script>
+  // ── Load profile name & email from localStorage ──────────────────────
+  (function() {
+    try {
+      const raw = localStorage.getItem('userProfileVault');
+      if (!raw) return;
+      const p = JSON.parse(raw);
+      
+      if (p.fullName) {
+        // Update "Good morning, User" greeting
+        const greet = document.getElementById('greetName');
+        if (greet) greet.textContent = p.fullName.split(' ')[0]; // first name only
+
+        // Update sidebar avatar initial letter
+        const av = document.querySelector('.av');
+        if (av) av.textContent = p.fullName.charAt(0).toUpperCase();
+      }
+
+      if (p.email) {
+        // Update the top-right email pill
+        const pill = document.querySelector('.user-name');
+        if (pill) pill.textContent = p.email;
+      }
+    } catch(e) { /* silently ignore */ }
+  })();
+</script>
+</body>
+</html>

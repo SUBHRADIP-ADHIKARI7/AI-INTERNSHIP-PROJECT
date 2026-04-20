@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — InternAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{--cyan:#00f0ff;--violet:#7000ff;--pink:#ff007b;--dark:#080812;--glass:rgba(255,255,255,.05);--border:rgba(255,255,255,.10)}
+  body{font-family:'Outfit',sans-serif;background:var(--dark);color:#fff;min-height:100vh;overflow:hidden;display:flex}
+
+  /* ── Left Visual ── */
+  .visual{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem;overflow:hidden;background:linear-gradient(135deg,rgba(0,240,255,.03),rgba(112,0,255,.05))}
+  
+  /* Blobs for visual side */
+  .v-blob{position:absolute;border-radius:50%;filter:blur(90px);animation:sway 18s ease-in-out infinite alternate}
+  .vb1{width:500px;height:500px;background:var(--violet);top:-20%;left:-20%;opacity:.5}
+  .vb2{width:380px;height:380px;background:var(--cyan);bottom:-15%;right:-15%;opacity:.4;animation-delay:-9s}
+  @keyframes sway{0%{transform:translate(0,0)}100%{transform:translate(40px,60px)}}
+  
+  /* 3D Floating Orb */
+  .orb-wrap{position:relative;width:260px;height:260px;margin-bottom:3rem;perspective:1000px}
+  .orb{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 30%,#a78bff,var(--violet));
+    box-shadow:0 0 70px rgba(112,0,255,.5),inset -20px -20px 40px rgba(0,0,0,.5),inset 20px 20px 40px rgba(255,255,255,.35);
+    animation:float-orb 6s ease-in-out infinite}
+  @keyframes float-orb{0%,100%{transform:translateY(0) rotateX(10deg) rotateY(-5deg)}50%{transform:translateY(-22px) rotateX(-5deg) rotateY(10deg)}}
+  .ring{position:absolute;border-radius:50%;border:1px solid rgba(112,0,255,.3)}
+  .ring1{inset:-15%;animation:spin1 12s linear infinite}
+  .ring2{inset:-28%;border:1px dashed rgba(0,240,255,.2);animation:spin2 18s linear infinite}
+  @keyframes spin1{to{transform:rotateX(70deg) rotateZ(360deg)}}
+  @keyframes spin2{to{transform:rotateX(55deg) rotateY(20deg) rotateZ(-360deg)}}
+  
+  .visual h2{font-size:2.8rem;font-weight:800;text-align:center;margin-bottom:1rem;background:linear-gradient(to bottom,#fff,rgba(255,255,255,.5));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .visual p{color:rgba(255,255,255,.45);font-size:1rem;text-align:center;max-width:380px;line-height:1.65}
+
+  /* ── Form Panel ── */
+  .form-panel{width:480px;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:3rem 2.5rem;background:rgba(8,8,18,.7);backdrop-filter:blur(30px);border-left:1px solid var(--border)}
+  .form-box{width:100%}
+  .form-box h3{font-size:2rem;font-weight:800;margin-bottom:.4rem}
+  .sub{color:rgba(255,255,255,.4);font-size:.95rem;margin-bottom:2.5rem}
+  
+  /* Floating Label Fields */
+  .field{position:relative;margin-bottom:1.8rem}
+  .field input{
+    width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;
+    padding:1.1rem 1.2rem .5rem;color:#fff;font-size:1rem;font-family:inherit;
+    transition:all .3s ease;outline:none
+  }
+  .field input:focus{border-color:var(--violet);background:rgba(112,0,255,.07);box-shadow:0 0 18px rgba(112,0,255,.15)}
+  .field label{position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);pointer-events:none;transition:all .3s ease;font-size:1rem}
+  .field input:focus~label,.field input:valid~label{top:.6rem;transform:translateY(0);font-size:.73rem;color:var(--violet)}
+  
+  .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;font-size:.88rem}
+  .row label{display:flex;align-items:center;gap:.4rem;color:rgba(255,255,255,.5);cursor:pointer}
+  .row input[type=checkbox]{accent-color:var(--violet)}
+  .row a{color:var(--violet);text-decoration:none;transition:color .3s}
+  .row a:hover{color:#fff}
+  
+  /* 3D Skeuomorphic Submit Button */
+  .submit-btn{
+    width:100%;padding:1.15rem;border:none;border-radius:16px;font-family:inherit;font-size:1.1rem;font-weight:700;
+    cursor:pointer;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#9b6fff 0%,var(--violet) 100%);
+    color:#fff;
+    box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -5px 8px rgba(0,0,0,.35),0 10px 28px rgba(112,0,255,.4),0 16px 40px rgba(0,0,0,.5);
+    transition:all .2s cubic-bezier(.1,.7,1,.1)
+  }
+  .submit-btn:hover{transform:translateY(-3px);box-shadow:inset 0 2px 3px rgba(255,255,255,.3),0 0 28px rgba(112,0,255,.6),0 14px 36px rgba(112,0,255,.3),0 20px 50px rgba(0,0,0,.6)}
+  .submit-btn:active{transform:translateY(6px);box-shadow:inset 0 5px 12px rgba(0,0,0,.5)}
+  .submit-btn .shimmer{position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .5s ease}
+  .submit-btn:hover .shimmer{left:100%}
+  .spin-icon{display:none;width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:s 1s linear infinite;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+  @keyframes s{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  .submit-btn.ld{color:transparent;pointer-events:none}
+  .submit-btn.ld .spin-icon{display:block}
+  
+  .redir{text-align:center;margin-top:1.8rem;font-size:.9rem;color:rgba(255,255,255,.4)}
+  .redir a{color:var(--violet);text-decoration:none;font-weight:700;margin-left:.2rem;transition:all .3s}
+  .redir a:hover{color:#fff}
+  
+  @media(max-width:800px){
+    body{flex-direction:column}
+    .visual{padding:3rem 2rem 2rem;height:auto}
+    .orb-wrap{width:140px;height:140px;margin-bottom:1.5rem}
+    .visual h2{font-size:2rem}
+    .form-panel{width:100%;border-left:none;border-top:1px solid var(--border)}
+  }
+</style>
+</head>
+<body>
+
+<!-- Left Visual Pane -->
+<div class="visual">
+  <div class="v-blob vb1"></div>
+  <div class="v-blob vb2"></div>
+  
+  <div class="orb-wrap">
+    <div class="orb"></div>
+    <div class="ring ring1"></div>
+    <div class="ring ring2"></div>
+  </div>
+  <h2>Welcome Back.</h2>
+  <p>Access your personalized internship hub, track resume insights, and sharpen your interview skills with AI.</p>
+</div>
+
+<!-- Right Form Pane -->
+<div class="form-panel">
+  <div class="form-box">
+    <h3>Sign In</h3>
+    <div class="sub">Enter your credentials to continue</div>
+    
+    <form id="lf" onsubmit="go(event)">
+      <div class="field">
+        <input type="email" id="em" required autocomplete="off">
+        <label for="em">Email Address</label>
+      </div>
+      <div class="field">
+        <input type="password" id="pw" required autocomplete="off">
+        <label for="pw">Password</label>
+      </div>
+
+      <div class="row">
+        <label><input type="checkbox"> Remember me</label>
+        <a href="/forgot-password">Forgot password?</a>
+      </div>
+      <button type="submit" class="submit-btn" id="sb">
+        Sign In
+        <div class="shimmer"></div>
+        <div class="spin-icon"></div>
+      </button>
+    </form>
+    
+    <div class="redir">
+      New to InternAI? <a href="/register">Create an account</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function go(e){
+    e.preventDefault();
+    const b=document.getElementById('sb');
+    b.classList.add('ld');
+    const fd = new FormData();
+    fd.append('email', document.getElementById('em').value.trim());
+    fd.append('password', document.getElementById('pw').value);
+    try {
+      const res = await fetch('/api/auth/login', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (data.token) {
+        // Store session_id (resume token) and auth token
+        if (data.user && data.user.session_id) {
+          localStorage.setItem('session_id', data.user.session_id);
+        }
+        localStorage.setItem('auth_token', data.token);
+        // Save user profile for use across the site
+        const profile = {
+          fullName: (data.user && data.user.fullName) || '',
+          email: (data.user && data.user.email) || document.getElementById('em').value.trim(),
+          skills: (data.skills || []).join(', '),
+          role: data.role || ''
+        };
+        localStorage.setItem('userProfileVault', JSON.stringify(profile));
+        window.location.href = '/user-dashboard';
+      } else {
+        alert('Login failed: ' + (data.error || 'Unknown error'));
+        b.classList.remove('ld');
+      }
+    } catch(err) {
+      alert('Network error.');
+      b.classList.remove('ld');
+    }
+  }
+</script>
+</body>
+</html>

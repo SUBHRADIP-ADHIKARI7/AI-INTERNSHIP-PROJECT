@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - InternAI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            width: 100%;
+            margin-bottom: 4rem;
+        }
+        .profile-sidebar {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #7000ff, #00f0ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            border: 3px solid rgba(255,255,255,0.2);
+        }
+        .profile-sidebar h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            color: white;
+            text-shadow: 0 0 10px rgba(0,240,255,0.5);
+        }
+        .profile-sidebar p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        .profile-main {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-top: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 20px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,240,255,0.05);
+        }
+        .form-section h4 {
+            color: #00f0ff;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.8rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .form-group label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .form-group input {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1.2rem;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: rgba(0, 240, 255, 0.5);
+            background: rgba(0,240,255,0.05);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 15px rgba(0,240,255,0.2);
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-danger {
+            background: rgba(255, 0, 60, 0.1) !important;
+            border: 1px solid rgba(255, 0, 60, 0.4) !important;
+            color: #ff4a5a !important;
+            box-shadow: none !important;
+            transition: all 0.3s ease !important;
+        }
+        .btn-danger:hover {
+            background: rgba(255, 0, 60, 0.2) !important;
+            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3) !important;
+            transform: translateY(-2px) !important;
+        }
+        @media (max-width: 868px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Abstract Liquid Background -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="liquid-overlay"></div>
+
+    <main class="container">
+        <nav class="glass-nav">
+            <div class="logo">
+                <span class="ai-icon">🤖</span>
+                <h1><a href="/" style="text-decoration:none; color:inherit;">InternAI</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Explore</a></li>
+                <li><a href="#">My Matches</a></li>
+                <li><a href="/profile" class="active">Profile</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero" style="margin-top: 4rem; display: block;">
+            <div style="margin-bottom: 3rem;">
+                <h2 class="shadow-heading" style="text-align: left; margin-bottom: 0;">User Profile</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem; max-width: 600px;">Manage your personal details, adjust your security preferences, and update the information used for AI matching.</p>
+            </div>
+            
+            <div class="profile-container">
+                <!-- Sidebar -->
+                <div class="profile-sidebar">
+                    <div class="profile-avatar">👨‍💻</div>
+                    <h3 id="sidebarName">Alex Developer</h3>
+                    <p>Computer Science Student</p>
+                    <button class="sk-button btn-danger" style="width: 100%; margin-top: auto;">Reset All Profile Data</button>
+                    <p style="font-size: 0.8rem; margin-top: 1rem; margin-bottom: 0;">Warning: This clears your saved matches and uploaded resumes.</p>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="profile-main">
+                    
+                    <!-- AI AUTO FILL COMPONENT -->
+                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px dashed rgba(0, 240, 255, 0.3); padding: 1.5rem; border-radius: 12px; text-align: center; margin-bottom: 1rem;">
+                        <h4 style="color: #00f0ff; margin-bottom: 0.5rem; font-size: 1.2rem;">🤖 AI Resume Auto-Fill</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Use your saved resume to let our Deep NLP engine instantly extract and map your personal details to this form.</p>
+                        <button class="sk-button" id="autoFillBtn" style="background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.4); color: #00f0ff;">
+                            📄 Auto-Fill from Saved Resume
+                        </button>
+                        <p id="autoFillStatus" style="color: #00e4b8; font-size: 0.85rem; margin-top: 0.8rem; display: none; font-weight: bold;"></p>
+                    </div>
+
+                    <!-- Basic Details -->
+                    <div class="form-section">
+                        <h4>Demographics & Core Identity</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="fullName" placeholder="Enter full name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="email" placeholder="Email contact">
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="text" id="dob" placeholder="DD/MM/YYYY">
+                            </div>
+                            <div class="form-group">
+                                <label>Father's Name (Optional)</label>
+                                <input type="text" id="fathersName" placeholder="Father's name">
+                            </div>
+                            <div class="form-group">
+                                <label>Blood Group</label>
+                                <input type="text" id="bloodGroup" placeholder="e.g. O+, A-">
+                            </div>
+                            <div class="form-group">
+                                <label>Country / Residence</label>
+                                <input type="text" id="country" placeholder="e.g. India, USA">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="form-section">
+                        <h4>Technical Arsenal</h4>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Primary Skills & Frameworks (Comma separated)</label>
+                                <input type="text" id="skills" placeholder="e.g. React, Python, Node.js">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="form-section">
+                        <h4>Educational Qualifications</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>University / Boot Camp Name</label>
+                                <input type="text" id="universityName" placeholder="Institution">
+                            </div>
+                            <div class="form-group">
+                                <label>Student ID / Roll No</label>
+                                <input type="text" id="studentId" placeholder="ID Number">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Course of Degree</label>
+                                <input type="text" id="courseOfDegree" placeholder="e.g. B.Tech Computer Science">
+                            </div>
+                            <div class="form-group">
+                                <label>Graduate Year</label>
+                                <input type="text" id="gradYear" placeholder="e.g. 2024">
+                            </div>
+                            <div class="form-group">
+                                <label>Post-Graduate Year (if any)</label>
+                                <input type="text" id="postGradYear" placeholder="e.g. 2026 or leave blank">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Key Certifications</label>
+                                <input type="text" id="certifications" placeholder="e.g. AWS Solutions Architect, CEH">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions" style="margin-top: 2rem;">
+                        <button type="button" class="sk-button" style="background: transparent; box-shadow: none; border: 1px solid rgba(255,255,255,0.2);" onclick="loadProfile()">Revert Changes</button>
+                        <button type="button" class="sk-button primary-btn" onclick="saveProfile()">Save Profile Settings</button>
+                    </div>
+                    <p id="saveStatus" style="color: #00e4b8; font-size: 0.9rem; margin-top: 1rem; text-align: right; display: none; font-weight: bold;">✅ Profile changes saved successfully!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="ai-icon">🤖</span>
+                    <h2>InternAI</h2>
+                </div>
+                <p>Your AI-powered career launchpad. Scan, match, and practice your way to the perfect internship.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Explore Jobs</a></li>
+                    <li><a href="/profile">My Profile</a></li>
+                    <li><a href="#">AI Interview</a></li>
+                    <li><a href="#">Upload Resume</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="/documentation">Documentation</a></li>
+                    <li><a href="#">API Status</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Connect</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon sk-button" title="GitHub">🐙</a>
+                    <a href="#" class="social-icon sk-button" title="LinkedIn">💼</a>
+                    <a href="#" class="social-icon sk-button" title="Twitter">🐦</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 InternAI — Built with ❤️ and Artificial Intelligence</p>
+        </div>
+    </footer>
+
+    <script>
+        const DOM_FIELDS = ['fullName', 'email', 'dob', 'fathersName', 'bloodGroup', 'country', 'skills', 'universityName', 'studentId', 'courseOfDegree', 'gradYear', 'postGradYear', 'certifications'];
+
+        // 1. Storage Drivers
+        function saveProfile() {
+            const data = {};
+            DOM_FIELDS.forEach(f => data[f] = document.getElementById(f).value);
+            localStorage.setItem('userProfileVault', JSON.stringify(data));
+            
+            // Update the sidebar name live
+            const fullName = data.fullName || 'User';
+            document.getElementById('sidebarName').textContent = fullName;
+
+            const sts = document.getElementById('saveStatus');
+            sts.style.display = 'block';
+            setTimeout(() => { sts.style.display = 'none'; }, 3000);
+        }
+
+        function loadProfile() {
+            const raw = localStorage.getItem('userProfileVault');
+            if(raw) {
+                const data = JSON.parse(raw);
+                DOM_FIELDS.forEach(f => {
+                    if(data[f]) document.getElementById(f).value = data[f];
+                });
+                // Restore sidebar name
+                if(data.fullName) document.getElementById('sidebarName').textContent = data.fullName;
+            }
+        }
+        
+        // Load immediately
+        window.onload = loadProfile;
+
+        // 2. Automated AI Resume Extractor Binding
+        document.getElementById('autoFillBtn').addEventListener('click', async () => {
+            const sid = localStorage.getItem('session_id');
+            if(!sid) {
+                alert("No saved resume found. Please log in again.");
+                return;
+            }
+
+            const sts = document.getElementById('autoFillStatus');
+            const uploadBtn = document.getElementById('autoFillBtn');
+            
+            sts.style.display = 'block';
+
+            // Disable upload button during processing
+            if(uploadBtn) uploadBtn.disabled = true;
+
+            // Animated stage messages while server processes
+            const stages = [
+                { color: '#ffb84d', msg: '📄 Accessing saved document...' },
+                { color: '#ffb84d', msg: '🔍 Extracting full text via OCR pipeline...' },
+                { color: '#a78bfa', msg: '🧠 Scanning for skills, education & contact details...' },
+                { color: '#38bdf8', msg: '🎓 Detecting university, degree & graduation years...' },
+                { color: '#34d399', msg: '✨ Finalizing profile data — almost there...' },
+            ];
+            let stageIdx = 0;
+            const stageTimer = setInterval(() => {
+                const s = stages[Math.min(stageIdx, stages.length - 1)];
+                sts.style.color = s.color;
+                sts.innerHTML = s.msg;
+                stageIdx++;
+            }, 1800);
+
+            const formData = new FormData();
+            formData.append('session_id', sid);
+
+            try {
+                const response = await fetch('/api/interview/profile/extract', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                clearInterval(stageTimer);
+                const data = await response.json();
+                
+                if(data.profile) {
+                    const p = data.profile;
+                    if(p.fullName)       document.getElementById('fullName').value       = p.fullName;
+                    if(p.email)          document.getElementById('email').value          = p.email;
+                    if(p.dob)            document.getElementById('dob').value            = p.dob;
+                    if(p.fathersName)    document.getElementById('fathersName').value    = p.fathersName;
+                    if(p.bloodGroup)     document.getElementById('bloodGroup').value     = p.bloodGroup;
+                    if(p.country)        document.getElementById('country').value        = p.country;
+                    if(p.skills)         document.getElementById('skills').value         = p.skills;
+                    if(p.universityName) document.getElementById('universityName').value = p.universityName;
+                    if(p.id)             document.getElementById('studentId').value      = p.id;
+                    if(p.courseOfDegree) document.getElementById('courseOfDegree').value = p.courseOfDegree;
+                    if(p.gradYear)       document.getElementById('gradYear').value       = p.gradYear;
+                    if(p.postGradYear)   document.getElementById('postGradYear').value   = p.postGradYear;
+                    if(p.certifications) document.getElementById('certifications').value = p.certifications;
+
+                    sts.style.color = '#00e4b8';
+                    sts.innerHTML = '✅ All fields populated from your resume! Review and click "Save Profile Settings".';
+                } else {
+                    sts.style.color = '#ff5c5c';
+                    sts.innerHTML = '❌ Extraction Error: ' + (data.error || 'Invalid file format.');
+                }
+            } catch (err) {
+                clearInterval(stageTimer);
+                console.error(err);
+                sts.style.color = '#ff5c5c';
+                sts.innerHTML = '❌ Server connection failed. Ensure Flask backend is running.';
+            } finally {
+                if(uploadBtn) uploadBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

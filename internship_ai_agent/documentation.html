@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - InternAI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Unique Aesthetic */
+        body {
+            background-color: #0b1120;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main.container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .doc-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-top: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 20px;
+            padding: 3rem;
+            color: rgba(220, 240, 255, 0.9);
+            line-height: 1.8;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,240,255,0.05);
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .doc-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .doc-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .doc-section h3 {
+            color: #00f0ff;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .doc-item {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        .doc-item:hover {
+            background: rgba(0,240,255,0.05);
+            border-color: rgba(0,240,255,0.3);
+            transform: translateX(10px);
+        }
+        .doc-item h4 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .doc-item code {
+            background: rgba(0,240,255,0.1);
+            color: #00f0ff;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2" style="background: #0088ff;"></div>
+    <div class="liquid-overlay" style="background: radial-gradient(circle at center, transparent 0%, rgba(11, 17, 32, 0.85) 100%);"></div>
+
+    <main class="container">
+        <nav class="glass-nav">
+            <div class="logo">
+                <span class="ai-icon">🤖</span>
+                <h1><a href="index.html" style="text-decoration:none; color:inherit;">InternAI</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Explore</a></li>
+                <li><a href="#">My Matches</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
+            <div class="hero-content" style="flex: 1; max-width: 1000px; width: 95%; margin: 0 auto;">
+                <h2 class="shadow-heading" style="text-align: left;">System Architecture</h2>
+                <div class="doc-card">
+                    <p style="font-size: 1.1rem; margin-bottom: 2rem;">Welcome to the InternAI technical documentation. Here is a breakdown of how the various components of the platform work together to scan, process, and match you with your perfect internship.</p>
+                    
+                    <div class="doc-section">
+                        <h3><span style="font-size: 2rem;">🖥️</span> Frontend Architecture</h3>
+                        <p style="margin-bottom: 1.5rem;">The user interface is built securely with modern web standards, focusing on a responsive and animated experience.</p>
+                        
+                        <div class="doc-item">
+                            <h4>Main Dashboard</h4>
+                            <p>The core landing page. It houses the primary UI where users can initiate AI scans to find jobs, view their matched internships in real-time, and access the Mock Interview practice panel.</p>
+                        </div>
+                        <div class="doc-item">
+                            <h4>Client-Side Logic</h4>
+                            <p>Handles all frontend interactivity. It manages the simulated AI scanning animations, the drag-and-drop resume upload UI, and the dynamic mock interview chat bot interface.</p>
+                        </div>
+                        <div class="doc-item">
+                            <h4>Design System</h4>
+                            <p>Contains the global glassmorphic design language, liquid background animations, and responsive layouts used across the platform.</p>
+                        </div>
+                        <div class="doc-item">
+                            <h4>Ancillary Pages</h4>
+                            <p>Ancillary pages structured dynamically using CSS grid and flexbox, styled securely to inform users on data privacy patterns and facilitate contact.</p>
+                        </div>
+                    </div>
+
+                    <div class="doc-section">
+                        <h3><span style="font-size: 2rem;">⚙️</span> Backend Engine</h3>
+                        <p style="margin-bottom: 1.5rem;">The underlying Python architecture responsible for data aggregation and AI matching.</p>
+                        
+                        <div class="doc-item">
+                            <h4>The Core Brain</h4>
+                            <p>The main application entry point. It acts as the bridge that fetches scraped jobs from the cloud database and prepares them for the OpenAI agent matching module.</p>
+                        </div>
+                        <div class="doc-item">
+                            <h4>Data Aggregation</h4>
+                            <p>Uses the Jina AI Reader API to systematically fetch real internship listings from the web, convert them into clean formatted text, and upload them to the MongoDB Cloud DB.</p>
+                        </div>
+                        <div class="doc-item">
+                            <h4>Document Parser</h4>
+                            <p>Takes the user's uploaded PDF resume, extracts the raw textual data using PyPDF2, and stores it in the database so the AI understands the user's unique technical profile.</p>
+                        </div>
+                        <div class="doc-item">
+                            <h4>Cloud Infrastructure</h4>
+                            <p>Manages the secure connection to the remote MongoDB Atlas cluster, exposing access to the internal `jobs_col` and `resumes_col` collections for the other scripts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="ai-icon">🤖</span>
+                    <h2>InternAI</h2>
+                </div>
+                <p>Your AI-powered career launchpad. Scan, match, and practice your way to the perfect internship.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Explore Jobs</a></li>
+                    <li><a href="profile.html">My Profile</a></li>
+                    <li><a href="#">AI Interview</a></li>
+                    <li><a href="#">Upload Resume</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="#">API Status</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Connect</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon sk-button" title="GitHub">🐙</a>
+                    <a href="#" class="social-icon sk-button" title="LinkedIn">💼</a>
+                    <a href="#" class="social-icon sk-button" title="Twitter">🐦</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 InternAI — Built with ❤️ and Artificial Intelligence</p>
+        </div>
+    </footer>
+</body>
+</html>

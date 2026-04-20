@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Finder AI Agent</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Liquid Glass Background Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="liquid-overlay"></div>
+
+    <main class="container">
+        <nav class="glass-nav">
+            <div class="logo">
+                <span class="ai-icon">🤖</span>
+                <h1>InternAI</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Explore</a></li>
+                <li><a href="#">My Matches</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h2 class="shadow-heading">Find Your Next Internship.</h2>
+                <h2 class="shadow-heading highlight">Powered by AI.</h2>
+                <p>Advanced neural matching engine scanning thousands of opportunities to find the perfect role for you based on your resume data.</p>
+                <div class="action-group">
+                    <button class="sk-button primary-btn" id="startScanBtn">
+                        <span class="btn-content">
+                            <span class="icon">⚡</span>
+                            Start AI Scan
+                        </span>
+                    </button>
+                    <button class="sk-button secondary-btn" id="openCoverLetterModalBtn">Generate Cover Letter</button>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="glass-card main-dashboard">
+                    <div class="card-header">
+                        <div class="window-controls">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="status">AI Status: <span class="pulse">Active</span></div>
+                    </div>
+                    <div class="card-body" id="ai-feed">
+                        <div class="match-item sk-inset">
+                            <div class="company-logo google">G</div>
+                            <div class="job-info">
+                                <h3>Software Engineering Intern</h3>
+                                <p>Google • Summer 2026</p>
+                            </div>
+                            <div class="match-score sk-button">98% Match</div>
+                        </div>
+                        <div class="match-item sk-inset">
+                            <div class="company-logo meta">M</div>
+                            <div class="job-info">
+                                <h3>AI Research Intern</h3>
+                                <p>Meta • Fall 2026</p>
+                            </div>
+                            <div class="match-score sk-button">94% Match</div>
+                        </div>
+                        <div class="match-item sk-inset">
+                            <div class="company-logo apple">A</div>
+                            <div class="job-info">
+                                <h3>Frontend Developer Intern</h3>
+                                <p>Apple • Summer 2026</p>
+                            </div>
+                            <div class="match-score sk-button">91% Match</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Mock Interview Panel -->
+        <section class="mock-interview-section">
+            <div class="glass-card interview-panel">
+                <div class="card-header">
+                    <div class="window-controls">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="status">AI Interviewer: <span class="pulse">Ready</span></div>
+                </div>
+                <div class="interview-body">
+                    <div class="interviewer-avatar">
+                        <div class="orb"></div>
+                    </div>
+                    <div class="interview-content">
+                        <h3 class="shadow-heading" style="font-size: 2.5rem; margin-bottom: 1rem;">AI Mock Interview</h3>
+                        <p>Practice with our advanced conversational AI. It dynamically generates technical and behavioral questions based on your resume and target role.</p>
+
+                        <div class="interview-actions">
+                            <button class="sk-button primary-btn start-interview-btn" style="margin-top: 1.5rem;" onclick="window.location.href='/mock-interview/'">
+                                <span class="btn-content">
+                                    <span class="icon">🎙️</span>
+                                    Start Practice Interview
+                                </span>
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="ai-icon">🤖</span>
+                    <h2>InternAI</h2>
+                </div>
+                <p>Your AI-powered career launchpad. Scan, match, and practice your way to the perfect internship.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Explore Jobs</a></li>
+                    <li><a href="/profile">My Profile</a></li>
+                    <li><a href="#">AI Interview</a></li>
+                    <li><a href="#">Upload Resume</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="/documentation">Documentation</a></li>
+                    <li><a href="#">API Status</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Connect</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon sk-button" title="GitHub">🐙</a>
+                    <a href="#" class="social-icon sk-button" title="LinkedIn">💼</a>
+                    <a href="#" class="social-icon sk-button" title="Twitter">🐦</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 InternAI — Built with ❤️ and Artificial Intelligence</p>
+        </div>
+        <!-- Cover Letter Modal -->
+        <div class="modal-overlay" id="coverLetterModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(8px); z-index:100; align-items:center; justify-content:center;">
+            <div class="modal" style="background:linear-gradient(135deg,rgba(30,20,60,.96),rgba(8,8,18,.98)); border:1px solid rgba(255,255,255,.12); border-radius:28px; padding:2.5rem; width:100%; max-width:660px; max-height:90vh; overflow-y:auto; box-shadow:0 40px 80px rgba(0,0,0,.7); position:relative; font-family: 'Outfit', sans-serif;">
+                <button class="modal-close" id="closeCoverLetterModal" style="position:absolute; top:1.2rem; right:1.2rem; width:32px; height:32px; border-radius:50%; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.06); cursor:pointer; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); font-size:1rem;">✕</button>
+                <h3 style="font-size:1.5rem; font-weight:800; color:#fff; margin-bottom:0.4rem;">✉️ Generate Cover Letter</h3>
+                <div style="color:rgba(255,255,255,.4); font-size:0.9rem; margin-bottom:2rem;">Upload your resume and enter the target job details. We'll use your exact experience to tailor the cover letter.</div>
+                
+                <div style="margin-bottom:1.5rem;">
+                    <label style="display:block; font-size:0.85rem; color:rgba(255,255,255,0.6); margin-bottom:0.4rem;">Target Job Title *</label>
+                    <input type="text" id="clJobTitle" placeholder="e.g. Frontend Developer" style="width:100%; padding:0.8rem 1rem; border-radius:12px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; font-family:inherit; outline:none;" />
+                </div>
+
+                <div style="margin-bottom:1.5rem;">
+                    <label style="display:block; font-size:0.85rem; color:rgba(255,255,255,0.6); margin-bottom:0.4rem;">Target Company (Optional)</label>
+                    <input type="text" id="clCompany" placeholder="e.g. Google" style="width:100%; padding:0.8rem 1rem; border-radius:12px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; font-family:inherit; outline:none;" />
+                </div>
+
+                <div style="margin-bottom:2rem; padding:1rem; border-radius:12px; background:rgba(0, 240, 255, 0.05); border:1px dashed rgba(0, 240, 255, 0.3);">
+                    <div style="color:#00f0ff; font-size:0.9rem; margin-bottom:0.4rem;">✅ Saved Resume Active</div>
+                    <div style="color:rgba(255,255,255,0.5); font-size:0.8rem;">We'll use the resume you uploaded during sign-in to tailor this cover letter.</div>
+                </div>
+
+                <button id="submitGenerateCL" style="width:100%; padding:1rem; border-radius:14px; background:linear-gradient(135deg, #7c3aed, #c026d3); border:none; color:#fff; font-weight:700; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem; box-shadow:0 10px 25px rgba(124,58,237,0.4);">
+                    <span id="clBtnText">Generate Now</span>
+                    <span id="clSpinner" style="display:none; width:18px; height:18px; border:3px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin 1s linear infinite;"></span>
+                </button>
+
+                <div id="clResult" style="display:none; margin-top:1.5rem;">
+                    <div style="color:#a78bfa; font-size:0.85rem; margin-bottom:0.6rem; font-weight:600;">✅ Cover letter generated! Edit below before downloading:</div>
+                    <textarea id="clEditor" rows="14" style="width:100%; padding:1rem; border-radius:12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.15); color:#e2e8f0; font-family:'Courier New',monospace; font-size:0.82rem; line-height:1.6; resize:vertical; outline:none;"></textarea>
+                    <div style="display:flex; gap:0.8rem; margin-top:0.8rem;">
+                        <button id="clDlPdfBtn" style="flex:1; padding:0.75rem; border-radius:12px; background:linear-gradient(135deg,#be185d,#9f1239); border:none; color:#fff; font-weight:700; font-size:0.9rem; cursor:pointer;">📄 Download PDF</button>
+                        <button id="clDlDocxBtn" style="flex:1; padding:0.75rem; border-radius:12px; background:linear-gradient(135deg,#1d4ed8,#1e40af); border:none; color:#fff; font-weight:700; font-size:0.9rem; cursor:pointer;">📝 Download DOCX</button>
+                    </div>
+                </div>
+                <div id="clError" style="display:none; margin-top:1rem; color:var(--pink); font-size:0.85rem; text-align:center; padding:1rem; border-radius:8px; background:rgba(255,0,123,0.05); border:1px solid rgba(255,0,123,0.2);"></div>
+            </div>
+        </div>
+        <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+        <script>
+            // Cover Letter Modal Logic
+            const clModal = document.getElementById('coverLetterModal');
+            const openClBtn = document.getElementById('openCoverLetterModalBtn');
+            const closeClBtn = document.getElementById('closeCoverLetterModal');
+            const submitClBtn = document.getElementById('submitGenerateCL');
+            const clBtnText = document.getElementById('clBtnText');
+            const clSpinner = document.getElementById('clSpinner');
+            const clResult = document.getElementById('clResult');
+            const clError = document.getElementById('clError');
+
+            if(openClBtn) {
+                openClBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    clModal.style.display = 'flex';
+                    clResult.style.display = 'none';
+                    clError.style.display = 'none';
+                    document.getElementById('clJobTitle').value = '';
+                    document.getElementById('clCompany').value = '';
+                });
+            }
+            
+            if(closeClBtn) {
+                closeClBtn.addEventListener('click', () => clModal.style.display = 'none');
+            }
+            
+            if(clModal) {
+                clModal.addEventListener('click', (e) => {
+                    if(e.target === clModal) clModal.style.display = 'none';
+                });
+            }
+
+            if(submitClBtn) {
+                submitClBtn.addEventListener('click', async () => {
+                    const jobTitle = document.getElementById('clJobTitle').value.trim();
+                    const company = document.getElementById('clCompany').value.trim();
+                    const sid = localStorage.getItem('session_id');
+                    
+                    if(!jobTitle) {
+                        clError.textContent = 'Please enter a Target Job Title.';
+                        clError.style.display = 'block';
+                        return;
+                    }
+                    if(!sid) {
+                        clError.textContent = 'No saved resume found. Please log in to your account first.';
+                        clError.style.display = 'block';
+                        setTimeout(() => window.location.href='/login', 2500);
+                        return;
+                    }
+                    
+                    clError.style.display = 'none';
+                    clResult.style.display = 'none';
+                    
+                    const formData = new FormData();
+                    formData.append('jobTitle', jobTitle);
+                    formData.append('company', company);
+                    formData.append('session_id', sid);
+
+                    submitClBtn.disabled = true;
+                    submitClBtn.style.opacity = '0.7';
+                    clBtnText.textContent = 'Reading Resume & Generating AI Letter...';
+                    clSpinner.style.display = 'block';
+
+                    try {
+                        const res = await fetch('/api/generate-cover-letter', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const data = await res.json();
+                        if(!res.ok || data.error) {
+                            throw new Error(data.error || 'Failed to generate cover letter');
+                        }
+
+                        // Put the generated text into the editor for the user to edit
+                        document.getElementById('clEditor').value = data.text;
+                        clResult.style.display = 'block';
+                        clBtnText.textContent = 'Regenerate';
+
+                    } catch (err) {
+                        clError.textContent = err.message;
+                        clError.style.display = 'block';
+                        clBtnText.textContent = 'Generate Now';
+                    } finally {
+                        submitClBtn.disabled = false;
+                        submitClBtn.style.opacity = '1';
+                        clSpinner.style.display = 'none';
+                    }
+                });
+
+                // Helper: call /api/download-cover-letter and trigger browser download
+                async function downloadCL(format) {
+                    const text = document.getElementById('clEditor').value;
+                    if(!text.trim()) return;
+                    const jobTitle = document.getElementById('clJobTitle').value.trim() || 'Cover_Letter';
+                    try {
+                        const res = await fetch('/api/download-cover-letter', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ text, format })
+                        });
+                        const data = await res.json();
+                        if(data.error) throw new Error(data.error);
+                        const mime = format === 'pdf'
+                            ? 'application/pdf'
+                            : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                        const ext = format;
+                        const a = document.createElement('a');
+                        a.href = `data:${mime};base64,${data.file_base64}`;
+                        a.download = `Cover_Letter_${jobTitle.replace(/\s+/g,'_')}.${ext}`;
+                        a.click();
+                    } catch(e) {
+                        clError.textContent = 'Download failed: ' + e.message;
+                        clError.style.display = 'block';
+                    }
+                }
+
+                document.getElementById('clDlPdfBtn').addEventListener('click', () => downloadCL('pdf'));
+                document.getElementById('clDlDocxBtn').addEventListener('click', () => downloadCL('docx'));
+            }
+        </script>
+    </footer>
+
+    <script src="/static/homepage.js"></script>
+</body>
+</html>

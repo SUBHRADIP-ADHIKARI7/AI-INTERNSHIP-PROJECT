@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+uploads/
+.env
+secrets
+*.txt
+*.png
+temp.js
+test_signup.json
+MockInterviewApp/
