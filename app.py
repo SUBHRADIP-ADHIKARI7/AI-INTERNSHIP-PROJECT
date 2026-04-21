@@ -1147,66 +1147,35 @@ def create_avatar_session():
 def generate_interview_questions():
     try:
         data = request.get_json() or {}
-        skills = data.get('skills', [])
-        difficulty = data.get('difficulty', 'Medium')
-        count = int(data.get('count', 5))
+        difficulty = data.get('difficulty', 'medium')
+        try:
+            count = int(data.get('count', 20))
+        except (TypeError, ValueError):
+            count = 20
+        from mock_interview import generate_real_life_questions, infer_role
 
-        skills_str = ', '.join(skills) if skills else 'general software engineering'
+        incoming_profile = data.get("profile")
+        if isinstance(incoming_profile, dict) and incoming_profile:
+            profile = dict(incoming_profile)
+        else:
+            skills = data.get("skills", []) or []
+            role = data.get("role") or (infer_role(skills) if skills else "Software Engineer")
+            profile = {
+                "role": role,
+                "skills": skills,
+                "projects": [],
+                "experienceHighlights": [],
+                "achievements": [],
+                "yearsExperience": 0
+            }
 
-        difficulty_guidance = {
-            'Easy': 'simple, conceptual, beginner-friendly questions that test basic understanding and definitions',
-            'Medium': 'practical, scenario-based questions that test applied knowledge and real-world usage',
-            'Hard': 'complex, architectural, system-design and edge-case questions requiring deep expert-level reasoning'
-        }.get(difficulty, 'practical questions')
-
-        prompt = f"""You are a professional technical interviewer. Generate exactly {count} interview questions for a candidate with the following skills: {skills_str}.
-
-Difficulty level: {difficulty} — Ask {difficulty_guidance}.
-
-Rules:
-- Exactly ONE of the {count} questions must be a "coding" question (e.g. "Write a function to...", "Implement a script that..."). The other {count-1} should be spoken/conceptual.
-- Each question must be directly related to the candidate's listed skills.
-- Questions must be distinct and not repeat concepts.
-- Return ONLY a JSON array of {count} objects, with no outside text.
-- Each object must have two keys: "text" (the question string) and "is_coding" (boolean).
-- Example format: 
-[
-  {{"text": "Explain how event loops work.", "is_coding": false}},
-  {{"text": "Write a Python function to reverse a string.", "is_coding": true}}
-]
-
-Output the JSON array now:"""
-
-        response = llm.invoke([HumanMessage(content=prompt)])
-        raw = response.content.strip()
-
-        # Parse the JSON from the response
-        import re
-        match = re.search(r'\[\s*\{.*\}\s*\]', raw, re.DOTALL)
-        
-        questions = []
-        if match:
-            try:
-                questions = json.loads(match.group())
-            except:
-                pass
-                
-        # Fallback if parsing failed
-        if not questions or not isinstance(questions, list):
-            questions = [
-                {"text": f"Can you explain your experience with {skills[0] if skills else 'software development'}?", "is_coding": False},
-                {"text": "Describe a challenging technical problem you solved recently.", "is_coding": False},
-                {"text": f"Write a function to implement a basic feature using {skills[0] if skills else 'any language'}.", "is_coding": True},
-                {"text": "How do you approach debugging a complex issue?", "is_coding": False},
-                {"text": "What software development best practices do you follow?", "is_coding": False}
-            ][:count]
-
-        # Ensure we have exactly `count` items
-        while len(questions) < count:
-            questions.append({"text": "Where do you see yourself growing technically in the next year?", "is_coding": False})
-        questions = questions[:count]
-
-        return jsonify({'questions': questions, 'difficulty': difficulty, 'count': len(questions)})
+        questions = generate_real_life_questions(profile, difficulty=difficulty, count=count)
+        return jsonify({
+            'questions': questions,
+            'difficulty': difficulty,
+            'count': len(questions),
+            'role': profile.get("role", "Software Engineer")
+        })
     except Exception as e:
         import traceback; traceback.print_exc()
         return jsonify({'error': str(e)}), 500
@@ -1218,10 +1187,16 @@ def fast_extract_skills():
         return jsonify({'error': 'No file provided'}), 400
     try:
         file = request.files['resume']
-        from mock_interview import extract_text_from_pdf, extract_skills
+        from mock_interview import extract_text_from_pdf, extract_resume_profile
         text = extract_text_from_pdf(file.stream)
-        skills = extract_skills(text)
-        return jsonify({"extractedSkills": skills})
+        if not text or len(text) < 30:
+            return jsonify({"error": "Could not extract readable text from the resume PDF"}), 400
+        profile = extract_resume_profile(text)
+        return jsonify({
+            "extractedSkills": profile.get("skills", []),
+            "role": profile.get("role", "Software Engineer"),
+            "profile": profile
+        })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

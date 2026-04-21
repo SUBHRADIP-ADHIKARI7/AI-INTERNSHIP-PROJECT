@@ -206,31 +206,31 @@
         const first = nameParts[0] || '';
         const last  = nameParts.slice(1).join(' ') || '';
 
-        // Only fill if the field is currently empty
-        function fillIfEmpty(id, val) {
+        // Always overwrite with PDF data (even if user already typed something)
+        function fillField(id, val) {
           const el = document.getElementById(id);
-          if (el && !el.value.trim() && val) {
+          if (el && val) {
             el.value = val;
-            // Trigger floating label + flash highlight
+            // Trigger floating label animation
             el.dispatchEvent(new Event('input'));
+            // Flash green highlight to show it was auto-filled
             el.style.transition = 'box-shadow .4s ease, border-color .4s ease';
             el.style.borderColor = '#00e4b8';
-            el.style.boxShadow   = '0 0 18px rgba(0,228,184,.25)';
+            el.style.boxShadow   = '0 0 18px rgba(0,228,184,.3)';
             setTimeout(() => {
               el.style.borderColor = '';
               el.style.boxShadow   = '';
-            }, 2000);
+            }, 2500);
           }
         }
 
-        fillIfEmpty('fn',   first);
-        fillIfEmpty('ln',   last);
-        fillIfEmpty('em',   p.email);
-        // Infer target role from resume skills
-        if (!document.getElementById('role').value.trim() && p.skills) {
-          // Use the first 3 skills as a role hint if no explicit role
+        fillField('fn',   first);
+        fillField('ln',   last);
+        fillField('em',   p.email);
+        // Always infer and fill target role from PDF skills too
+        if (p.skills) {
           const inferredRole = await inferRoleFromSkills(p.skills);
-          fillIfEmpty('role', inferredRole);
+          fillField('role', inferredRole);
         }
 
         // Flash the resume box green
