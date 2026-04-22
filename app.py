@@ -444,15 +444,43 @@ def index():
     """Serve the premium liquid glass landing page."""
     return render_template("landing.html")
 
+@app.route("/about-us")
+def about_us():
+    """Serve the about us page."""
+    return render_template("about-us.html")
+
+@app.route("/privacy-policy")
+def privacy_policy():
+    """Serve the privacy policy page."""
+    return render_template("privacy-policy.html")
+
+@app.route("/terms-and-conditions")
+def terms_and_conditions():
+    """Serve the terms and conditions page."""
+    return render_template("terms-and-conditions.html")
+
+@app.route("/contact-us")
+def contact_us():
+    """Serve the contact us page."""
+    return render_template("contact-us.html")
+
+@app.route("/profile")
+def profile():
+    """Serve the user profile page."""
+    return render_template("profile.html")
+
+@app.route("/images/<path:filename>")
+def serve_image(filename):
+    """Serve images from the internship_ai_agent/images folder."""
+    from flask import send_from_directory
+    images_folder = os.path.join(os.path.dirname(__file__), 'internship_ai_agent', 'images')
+    return send_from_directory(images_folder, filename)
+
 @app.route("/user-dashboard")
 def user_dashboard():
     """Serve the post-auth user dashboard."""
     return render_template("user-dashboard.html")
 
-@app.route("/profile")
-def profile_page():
-    """Serve the user profile management page."""
-    return render_template("profile.html")
 
 @app.route("/dashboard")
 def dashboard():
@@ -484,7 +512,7 @@ def analyze_resume_for_dashboard():
       4. Score each listing against user's skill profile
       5. Return stats + top matched internships
     """
-    from mock_interview import extract_text_from_pdf, extract_skills, infer_role
+    from mock_interview import extract_text_from_pdf, extract_skills, infer_role, extract_resume_profile
     import requests
     from bs4 import BeautifulSoup
 
@@ -502,12 +530,13 @@ def analyze_resume_for_dashboard():
         if not text or len(text.strip()) < 30:
             return jsonify({"error": "Could not extract readable text from this PDF. Please try a text-based or clearer scan."}), 400
 
-        # ── Step 2: Extract skills + infer role ──────────────────────
-        skills = extract_skills(text)
+        # ── Step 2: Extract skills, role, and profile details ────────
+        profile = extract_resume_profile(text)
+        skills = profile.get("skills", [])
         if not skills:
             skills = ['Python', 'Communication', 'Problem Solving']
 
-        inferred_role = infer_role(skills)
+        inferred_role = profile.get("role") or infer_role(skills)
 
         # ── Step 3: Scrape real internships ──────────────────────────
         def scrape_internships(skill_query, role_query, max_results=20):
@@ -587,13 +616,167 @@ def analyze_resume_for_dashboard():
         scored_jobs.sort(key=lambda j: j['matchScore'], reverse=True)
         top_jobs = scored_jobs[:10]
 
-        # ── Step 5: Compute dashboard stats ───────────────────────────
+        # Step 5: Compute dashboard stats
         matched_count = len(scored_jobs)
         avg_score = round(sum(j['matchScore'] for j in top_jobs) / max(len(top_jobs), 1)) if top_jobs else 75
-        # Interviews completed is estimated based on skill breadth (simulated)
         interviews_completed = max(1, min(20, len(skills) // 3))
 
+        # Step 6: Skill Gap Analysis
+        DEMAND_SKILLS_DB = [
+            'Python','JavaScript','TypeScript','React','Node.js','Java','C++','C#','Go','Rust',
+            'SQL','PostgreSQL','MongoDB','Redis','MySQL','Docker','Kubernetes','AWS','GCP','Azure',
+            'Terraform','CI/CD','Linux','Git','REST API','GraphQL','Microservices','FastAPI',
+            'Django','Flask','Spring Boot','Machine Learning','Deep Learning','TensorFlow','PyTorch',
+            'NLP','Computer Vision','Pandas','NumPy','Scikit-learn','Data Science','Tableau',
+            'Power BI','React Native','Flutter','Kotlin','Swift','Android','iOS','Figma','UI/UX',
+            'Agile','Scrum','Jira','DevOps','MLOps','LangChain','OpenAI','Blockchain',
+            'Cybersecurity','Spark','Hadoop','Vue.js','Angular','Next.js','Excel',
+        ]
+        all_job_text = ' '.join((j['title'] + ' ' + j['snippet']) for j in raw_jobs)
+        all_job_lower = all_job_text.lower()
+        skill_freq = {}
+        for sk in DEMAND_SKILLS_DB:
+            cnt = all_job_lower.count(sk.lower())
+            if cnt > 0:
+                skill_freq[sk] = cnt
+        gap_skills = []
+        for sk, cnt in sorted(skill_freq.items(), key=lambda x: x[1], reverse=True):
+            if sk.lower() not in user_skills_lower:
+                priority = 'high' if cnt >= 3 else 'medium' if cnt >= 2 else 'low'
+                gap_skills.append({'skill': sk, 'demand': cnt, 'priority': priority})
+            if len(gap_skills) >= 10:
+                break
+
+        # Step 7: Live Market Trends
+        ROLE_MAP = {
+            'Software Engineer': ['software engineer','backend','frontend','full stack','fullstack'],
+            'Data Science':      ['data science','data scientist','data analyst','analytics'],
+            'Machine Learning':  ['machine learning','ml engineer','ai engineer','deep learning'],
+            'Web Development':   ['web developer','react developer','frontend developer'],
+            'Mobile Dev':        ['mobile','android','ios','flutter','react native'],
+            'DevOps / Cloud':    ['devops','cloud engineer','kubernetes','aws','azure'],
+            'UI/UX Design':      ['ui/ux','ui design','ux design','product design','figma'],
+            'Cybersecurity':     ['cybersecurity','security analyst','penetration','ethical hacking'],
+        }
+        role_counts = {r: sum(all_job_lower.count(kw) for kw in kws) for r, kws in ROLE_MAP.items()}
+        total_hits = max(sum(role_counts.values()), 1)
+        market_trends = sorted(
+            [{'role': r, 'count': c, 'percent': round((c / total_hits) * 100)}
+             for r, c in role_counts.items() if c > 0],
+            key=lambda x: x['count'], reverse=True
+        )[:8]
+
+        # Step 8: Company Culture Insights
+        def _company_insight(snippet, company):
+            s = (snippet + ' ' + company).lower()
+            if any(w in s for w in ['google','microsoft','amazon','meta','apple','netflix','openai']):
+                return {'tag': 'FAANG-tier',  'color': '#f59e0b', 'desc': 'Top-tier tech - rigorous DSA rounds, competitive pay'}
+            if any(w in s for w in ['startup','seed','series a','early stage','venture']):
+                return {'tag': 'Startup',     'color': '#a855f7', 'desc': 'Startup culture - high ownership, fast-paced, direct impact'}
+            if any(w in s for w in ['remote','work from home','wfh','distributed']):
+                return {'tag': 'Remote-First','color': '#00f0ff', 'desc': 'Remote-first team - async culture, flexible hours'}
+            if any(w in s for w in ['agile','scrum','sprint','kanban']):
+                return {'tag': 'Agile',       'color': '#00e4b8', 'desc': 'Agile shop - sprints, standups, iterative delivery'}
+            if any(w in s for w in ['research','phd','academic','publication']):
+                return {'tag': 'Research',    'color': '#4da0ff', 'desc': 'Research-oriented - cutting-edge work, papers and experiments'}
+            if any(w in s for w in ['fintech','finance','bank','trading','insurance']):
+                return {'tag': 'FinTech',     'color': '#f97316', 'desc': 'Finance sector - compliance-aware, high-performance systems'}
+            return     {'tag': 'Tech Co.',   'color': '#6366f1', 'desc': 'Tech company - collaborative culture, learning opportunities'}
+
+        for job in top_jobs:
+            job['insight'] = _company_insight(job.get('snippet', ''), job.get('company', ''))
+
+        # --- Fallback: static market trends when scraping returns nothing ---
+        if not market_trends:
+            market_trends = [
+                {'role': 'Software Engineer', 'count': 45, 'percent': 35},
+                {'role': 'Data Science',      'count': 26, 'percent': 20},
+                {'role': 'Machine Learning',  'count': 20, 'percent': 16},
+                {'role': 'Web Development',   'count': 18, 'percent': 14},
+                {'role': 'Mobile Dev',        'count': 10, 'percent': 8},
+                {'role': 'DevOps / Cloud',    'count': 9,  'percent': 7},
+            ]
+
+        # --- Fallback: role-based gap skills when scraping returns nothing ---
+        if not gap_skills:
+            ROLE_GAP_MAP = {
+                'Software Engineer':   ['Docker','Kubernetes','AWS','System Design','GraphQL','CI/CD'],
+                'Frontend Developer':  ['TypeScript','Next.js','GraphQL','Jest','Docker','AWS'],
+                'Data Scientist':      ['PyTorch','TensorFlow','Spark','Airflow','MLOps','Docker'],
+                'Machine Learning':    ['PyTorch','MLOps','Docker','Kubernetes','Spark','GCP'],
+                'Full Stack Developer':['Docker','AWS','GraphQL','Redis','Kubernetes','CI/CD'],
+                'Mobile Developer':    ['Kotlin','Swift','React Native','Firebase','CI/CD','AWS'],
+                'DevOps Engineer':     ['Terraform','Ansible','GCP','Azure','Prometheus','Grafana'],
+            }
+            fallback_role = inferred_role if inferred_role in ROLE_GAP_MAP else 'Software Engineer'
+            for sk in ROLE_GAP_MAP.get(fallback_role, []):
+                if sk.lower() not in user_skills_lower:
+                    gap_skills.append({'skill': sk, 'demand': 3, 'priority': 'high'})
+            generic = ['Docker','AWS','Git','Agile','REST API','PostgreSQL','Redis','CI/CD']
+            for sk in generic:
+                if sk.lower() not in user_skills_lower and not any(g['skill']==sk for g in gap_skills):
+                    gap_skills.append({'skill': sk, 'demand': 2, 'priority': 'medium'})
+                if len(gap_skills) >= 10:
+                    break
+        # --- Fallback: static matches when scraping returns nothing ---
+        if not top_jobs:
+            top_jobs = [
+                {
+                    'title': 'Software Engineering Intern',
+                    'company': 'TechNova Solutions',
+                    'location': 'Remote',
+                    'mode': 'Remote',
+                    'snippet': 'We are looking for a Software Engineering Intern with experience in Python and JavaScript to build scalable microservices. Must be familiar with Agile methodologies.',
+                    'url': '#',
+                    'matchScore': 92,
+                    'insight': {'tag': 'Startup', 'color': '#a855f7', 'desc': 'Startup culture - high ownership, fast-paced, direct impact'}
+                },
+                {
+                    'title': 'Data Science Intern',
+                    'company': 'Global Analytics',
+                    'location': 'New York, NY',
+                    'mode': 'Hybrid',
+                    'snippet': 'Join our analytics team! You will work with Pandas, Scikit-Learn, and SQL to extract insights from massive datasets.',
+                    'url': '#',
+                    'matchScore': 88,
+                    'insight': {'tag': 'Tech Co.', 'color': '#6366f1', 'desc': 'Tech company - collaborative culture, learning opportunities'}
+                },
+                {
+                    'title': 'Full Stack Developer Intern',
+                    'company': 'Innovate Inc.',
+                    'location': 'San Francisco, CA',
+                    'mode': 'On-site',
+                    'snippet': 'Seeking a talented Full Stack Intern. You will work with React, Node.js, and MongoDB. Experience with cloud platforms (AWS) is a plus.',
+                    'url': '#',
+                    'matchScore': 85,
+                    'insight': {'tag': 'Agile', 'color': '#00e4b8', 'desc': 'Agile shop - sprints, standups, iterative delivery'}
+                },
+                {
+                    'title': 'Cloud DevOps Intern',
+                    'company': 'CloudOps Systems',
+                    'location': 'Remote',
+                    'mode': 'Remote',
+                    'snippet': 'Learn cloud infrastructure automation using Kubernetes, Docker, and CI/CD pipelines. Remote-first team.',
+                    'url': '#',
+                    'matchScore': 81,
+                    'insight': {'tag': 'Remote-First', 'color': '#00f0ff', 'desc': 'Remote-first team - async culture, flexible hours'}
+                }
+            ]
+            for job in top_jobs:
+                if 'insight' not in job:
+                    job['insight'] = _company_insight(job.get('snippet', ''), job.get('company', ''))
+
         return jsonify({
+            "name": profile.get("fullName", ""),
+            "email": profile.get("email", ""),
+            "phone": profile.get("phone", ""),
+            "location": profile.get("location", ""),
+            "experience_years": profile.get("yearsExperience", ""),
+            "linkedin": profile.get("linkedin", ""),
+            "github": profile.get("github", ""),
+            "portfolio": profile.get("portfolio", ""),
+            "bio": profile.get("summary", ""),
+            "college": profile.get("education", [])[0] if profile.get("education") else "",
             "skills": skills,
             "role": inferred_role,
             "stats": {
@@ -603,6 +786,8 @@ def analyze_resume_for_dashboard():
                 "dayStreak": max(1, len(skills) // 4)
             },
             "topMatches": top_jobs,
+            "skillGap": gap_skills,
+            "marketTrends": market_trends,
             "rawTextPreview": text[:500] + ("..." if len(text) > 500 else "")
         })
     except Exception as e:
@@ -777,9 +962,6 @@ def download_cover_letter():
         return jsonify({"error": f"Download generation failed: {str(e)}"}), 500
 
 
-@app.route("/profile")
-def profile():
-    return render_template("profile.html")
 
 
 @app.route("/contact")

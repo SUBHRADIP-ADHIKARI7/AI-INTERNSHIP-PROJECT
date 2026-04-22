@@ -1,418 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - InternAI</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        .profile-container {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 2rem;
-            width: 100%;
-            margin-bottom: 4rem;
-        }
-        .profile-sidebar {
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: radial-gradient(circle at center, #7000ff, #00f0ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-            border: 3px solid rgba(255,255,255,0.2);
-        }
-        .profile-sidebar h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.5rem;
-            color: white;
-            text-shadow: 0 0 10px rgba(0,240,255,0.5);
-        }
-        .profile-sidebar p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
-        .profile-main {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            border-top: 1px solid rgba(0, 240, 255, 0.4);
-            border-radius: 20px;
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,240,255,0.05);
-        }
-        .form-section h4 {
-            color: #00f0ff;
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 0.8rem;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-        .form-group label {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-        .form-group input {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 1.2rem;
-            border-radius: 12px;
-            color: white;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: rgba(0, 240, 255, 0.5);
-            background: rgba(0,240,255,0.05);
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 15px rgba(0,240,255,0.2);
-        }
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1.5rem;
-            margin-top: 1rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        .btn-danger {
-            background: rgba(255, 0, 60, 0.1) !important;
-            border: 1px solid rgba(255, 0, 60, 0.4) !important;
-            color: #ff4a5a !important;
-            box-shadow: none !important;
-            transition: all 0.3s ease !important;
-        }
-        .btn-danger:hover {
-            background: rgba(255, 0, 60, 0.2) !important;
-            box-shadow: 0 0 15px rgba(255, 0, 60, 0.3) !important;
-            transform: translateY(-2px) !important;
-        }
-        @media (max-width: 868px) {
-            .profile-container {
-                grid-template-columns: 1fr;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile | Internship Finder AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#00f3ff;--blue:#0088ff;--green:#00ff88;--purple:#b500ff;--panel:rgba(8,16,33,.85);--border:rgba(0,243,255,.3);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#070512;color:#ccc;min-height:100vh;overflow-x:hidden;}
+.bg{position:fixed;inset:0;z-index:-3;pointer-events:none;
+  background-image:linear-gradient(rgba(107,33,168,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(15,75,180,.1) 1px,transparent 1px);
+  background-size:50px 50px;animation:pan 25s linear infinite;
+  mask-image:radial-gradient(ellipse at center,black 20%,transparent 90%);
+  -webkit-mask-image:radial-gradient(ellipse at center,black 20%,transparent 90%);}
+@keyframes pan{to{background-position:0 50px;}}
+
+/* Header */
+nav{display:flex;justify-content:space-between;align-items:center;padding:12px 36px;
+  border-bottom:1px solid rgba(0,243,255,.2);backdrop-filter:blur(12px);
+  background:linear-gradient(180deg,rgba(0,10,30,.9),transparent);
+  position:sticky;top:0;z-index:100;}
+.brand{display:flex;align-items:center;gap:14px;}
+.hex{width:46px;height:52px;background:rgba(0,243,255,.1);border:2px solid var(--cyan);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:grid;place-items:center;box-shadow:0 0 14px var(--cyan);}
+.hex span{font-size:17px;font-weight:800;color:#fff;}
+h1{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;
+  background:linear-gradient(90deg,#fff,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.back{background:transparent;border:1px solid var(--blue);color:var(--cyan);padding:7px 20px;
+  font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;letter-spacing:1px;
+  border-radius:4px;text-decoration:none;transition:.3s;}
+.back:hover{background:rgba(0,136,255,.2);box-shadow:0 0 14px var(--blue);}
+
+/* Layout */
+.wrap{max-width:1060px;margin:0 auto;padding:24px 20px 60px;display:grid;grid-template-columns:240px 1fr;gap:22px;}
+@media(max-width:720px){.wrap{grid-template-columns:1fr;}}
+
+/* Panel */
+.card{background:var(--panel);backdrop-filter:blur(10px);border:1px solid var(--border);
+  border-radius:14px;padding:24px;position:relative;transition:box-shadow .3s;}
+.card:hover{box-shadow:0 0 22px rgba(0,243,255,.12);}
+.card::before{content:'';position:absolute;top:-1px;left:-1px;width:14px;height:14px;
+  border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);border-top-left-radius:14px;}
+.card::after{content:'';position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;
+  border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan);border-bottom-right-radius:14px;}
+
+/* LEFT: avatar + resume */
+.left{display:flex;flex-direction:column;gap:20px;}
+
+.avatar-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.avatar-circle{width:88px;height:88px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(0,243,255,.15),rgba(181,0,255,.15));
+  border:2px solid var(--cyan);box-shadow:0 0 18px rgba(0,243,255,.3);
+  display:grid;place-items:center;cursor:pointer;transition:.3s;overflow:hidden;position:relative;}
+.avatar-circle:hover{box-shadow:0 0 28px rgba(0,243,255,.55);}
+.avatar-circle img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+.avatar-circle .ini{font-size:32px;font-weight:800;color:#fff;}
+.avatar-hint{font-size:10px;color:#555;text-align:center;}
+input[type=file]{display:none;}
+
+.drop{border:2px dashed rgba(0,243,255,.25);border-radius:10px;
+  background:rgba(0,0,0,.3);padding:18px 12px;text-align:center;
+  cursor:pointer;transition:.3s;}
+.drop:hover,.drop.over{border-color:var(--cyan);background:rgba(0,243,255,.06);box-shadow:0 0 14px rgba(0,243,255,.18);}
+.drop svg{color:var(--cyan);margin-bottom:6px;}
+.drop p{font-size:12px;color:#888;}
+.fname{font-size:11px;color:var(--green);margin-top:6px;min-height:14px;word-break:break-all;}
+.btn-parse{width:100%;margin-top:12px;padding:10px;
+  background:linear-gradient(135deg,rgba(0,243,255,.1),rgba(181,0,255,.1));
+  border:1px solid var(--cyan);color:var(--cyan);
+  font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:1.5px;border-radius:8px;cursor:pointer;transition:.3s;}
+.btn-parse:hover{background:linear-gradient(135deg,rgba(0,243,255,.22),rgba(181,0,255,.18));box-shadow:0 0 16px rgba(0,243,255,.3);}
+.btn-parse:disabled{opacity:.35;cursor:not-allowed;}
+.pstatus{font-size:11px;text-align:center;margin-top:6px;min-height:14px;color:#888;}
+.pstatus.ok{color:var(--green);}.pstatus.err{color:#ff4444;}
+
+/* RIGHT: unified form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.span2{grid-column:1/-1;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:10px;color:#666;letter-spacing:1.5px;text-transform:uppercase;}
+.fg input,.fg textarea,.fg select{
+  background:rgba(0,0,0,.4);border:1px solid rgba(0,243,255,.18);color:#fff;
+  border-radius:6px;padding:8px 12px;font-size:13px;font-family:'Inter',sans-serif;
+  outline:none;transition:.3s;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--cyan);box-shadow:0 0 8px rgba(0,243,255,.2);}
+.fg input.filled{border-color:rgba(0,255,136,.45);background:rgba(0,255,136,.04);}
+.fg textarea{resize:vertical;min-height:70px;}
+.fg select option{background:#0a0a1e;}
+
+/* Skills */
+.skills-box{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;min-height:26px;}
+.stag{background:rgba(0,243,255,.08);border:1px solid rgba(0,243,255,.28);
+  color:var(--cyan);font-size:11px;padding:3px 9px;border-radius:12px;
+  display:flex;align-items:center;gap:4px;}
+.stag button{background:none;border:none;color:#ff4444;cursor:pointer;font-size:12px;line-height:1;padding:0;}
+
+/* Save */
+.btn-save{width:100%;padding:12px;margin-top:18px;
+  background:linear-gradient(135deg,rgba(0,243,255,.14),rgba(181,0,255,.14));
+  border:1px solid var(--cyan);color:var(--cyan);
+  font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;
+  letter-spacing:2px;border-radius:8px;cursor:pointer;transition:.3s;}
+.btn-save:hover{background:linear-gradient(135deg,rgba(0,243,255,.26),rgba(181,0,255,.22));box-shadow:0 0 20px rgba(0,243,255,.32);}
+
+.toast{position:fixed;bottom:26px;right:26px;z-index:9999;
+  background:rgba(0,255,136,.12);border:1px solid var(--green);color:var(--green);
+  padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;
+  box-shadow:0 0 18px rgba(0,255,136,.22);opacity:0;pointer-events:none;transition:opacity .4s;}
+.toast.show{opacity:1;}
+
+.sec-label{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2px;color:#fff;text-transform:uppercase;margin-bottom:14px;
+  padding-bottom:8px;border-bottom:1px solid rgba(0,243,255,.15);
+  display:flex;align-items:center;gap:8px;}
+.sec-label svg{color:var(--cyan);}
+</style>
 </head>
 <body>
-    <!-- Abstract Liquid Background -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="liquid-overlay"></div>
+<div class="bg"></div>
 
-    <main class="container">
-        <nav class="glass-nav">
-            <div class="logo">
-                <span class="ai-icon">🤖</span>
-                <h1><a href="/" style="text-decoration:none; color:inherit;">InternAI</a></h1>
-            </div>
-            <ul class="nav-links">
-                <li><a href="/">Explore</a></li>
-                <li><a href="#">My Matches</a></li>
-                <li><a href="/profile" class="active">Profile</a></li>
-            </ul>
-        </nav>
+<nav>
+  <div class="brand">
+    <div class="hex"><span id="hIni">?</span></div>
+    <h1>MY PROFILE</h1>
+  </div>
+  <a href="/user-dashboard" class="back">&#8592; DASHBOARD</a>
+</nav>
 
-        <section class="hero" style="margin-top: 4rem; display: block;">
-            <div style="margin-bottom: 3rem;">
-                <h2 class="shadow-heading" style="text-align: left; margin-bottom: 0;">User Profile</h2>
-                <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem; max-width: 600px;">Manage your personal details, adjust your security preferences, and update the information used for AI matching.</p>
-            </div>
-            
-            <div class="profile-container">
-                <!-- Sidebar -->
-                <div class="profile-sidebar">
-                    <div class="profile-avatar">👨‍💻</div>
-                    <h3 id="sidebarName">Alex Developer</h3>
-                    <p>Computer Science Student</p>
-                    <button class="sk-button btn-danger" style="width: 100%; margin-top: auto;">Reset All Profile Data</button>
-                    <p style="font-size: 0.8rem; margin-top: 1rem; margin-bottom: 0;">Warning: This clears your saved matches and uploaded resumes.</p>
-                </div>
-                
-                <!-- Main Content -->
-                <div class="profile-main">
-                    
-                    <!-- AI AUTO FILL COMPONENT -->
-                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px dashed rgba(0, 240, 255, 0.3); padding: 1.5rem; border-radius: 12px; text-align: center; margin-bottom: 1rem;">
-                        <h4 style="color: #00f0ff; margin-bottom: 0.5rem; font-size: 1.2rem;">🤖 AI Resume Auto-Fill</h4>
-                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Use your saved resume to let our Deep NLP engine instantly extract and map your personal details to this form.</p>
-                        <button class="sk-button" id="autoFillBtn" style="background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.4); color: #00f0ff;">
-                            📄 Auto-Fill from Saved Resume
-                        </button>
-                        <p id="autoFillStatus" style="color: #00e4b8; font-size: 0.85rem; margin-top: 0.8rem; display: none; font-weight: bold;"></p>
-                    </div>
+<div class="wrap">
 
-                    <!-- Basic Details -->
-                    <div class="form-section">
-                        <h4>Demographics & Core Identity</h4>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input type="text" id="fullName" placeholder="Enter full name">
-                            </div>
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="email" id="email" placeholder="Email contact">
-                            </div>
-                            <div class="form-group">
-                                <label>Date of Birth</label>
-                                <input type="text" id="dob" placeholder="DD/MM/YYYY">
-                            </div>
-                            <div class="form-group">
-                                <label>Father's Name (Optional)</label>
-                                <input type="text" id="fathersName" placeholder="Father's name">
-                            </div>
-                            <div class="form-group">
-                                <label>Blood Group</label>
-                                <input type="text" id="bloodGroup" placeholder="e.g. O+, A-">
-                            </div>
-                            <div class="form-group">
-                                <label>Country / Residence</label>
-                                <input type="text" id="country" placeholder="e.g. India, USA">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Skills -->
-                    <div class="form-section">
-                        <h4>Technical Arsenal</h4>
-                        <div class="form-grid">
-                            <div class="form-group full-width">
-                                <label>Primary Skills & Frameworks (Comma separated)</label>
-                                <input type="text" id="skills" placeholder="e.g. React, Python, Node.js">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Education -->
-                    <div class="form-section">
-                        <h4>Educational Qualifications</h4>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>University / Boot Camp Name</label>
-                                <input type="text" id="universityName" placeholder="Institution">
-                            </div>
-                            <div class="form-group">
-                                <label>Student ID / Roll No</label>
-                                <input type="text" id="studentId" placeholder="ID Number">
-                            </div>
-                            <div class="form-group full-width">
-                                <label>Course of Degree</label>
-                                <input type="text" id="courseOfDegree" placeholder="e.g. B.Tech Computer Science">
-                            </div>
-                            <div class="form-group">
-                                <label>Graduate Year</label>
-                                <input type="text" id="gradYear" placeholder="e.g. 2024">
-                            </div>
-                            <div class="form-group">
-                                <label>Post-Graduate Year (if any)</label>
-                                <input type="text" id="postGradYear" placeholder="e.g. 2026 or leave blank">
-                            </div>
-                            <div class="form-group full-width">
-                                <label>Key Certifications</label>
-                                <input type="text" id="certifications" placeholder="e.g. AWS Solutions Architect, CEH">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions" style="margin-top: 2rem;">
-                        <button type="button" class="sk-button" style="background: transparent; box-shadow: none; border: 1px solid rgba(255,255,255,0.2);" onclick="loadProfile()">Revert Changes</button>
-                        <button type="button" class="sk-button primary-btn" onclick="saveProfile()">Save Profile Settings</button>
-                    </div>
-                    <p id="saveStatus" style="color: #00e4b8; font-size: 0.9rem; margin-top: 1rem; text-align: right; display: none; font-weight: bold;">✅ Profile changes saved successfully!</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="glass-footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <div class="logo">
-                    <span class="ai-icon">🤖</span>
-                    <h2>InternAI</h2>
-                </div>
-                <p>Your AI-powered career launchpad. Scan, match, and practice your way to the perfect internship.</p>
-            </div>
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="/">Explore Jobs</a></li>
-                    <li><a href="/profile">My Profile</a></li>
-                    <li><a href="#">AI Interview</a></li>
-                    <li><a href="#">Upload Resume</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="/documentation">Documentation</a></li>
-                    <li><a href="#">API Status</a></li>
-                    <li><a href="/privacy">Privacy Policy</a></li>
-                    <li><a href="/contact">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="footer-social">
-                <h4>Connect</h4>
-                <div class="social-icons">
-                    <a href="#" class="social-icon sk-button" title="GitHub">🐙</a>
-                    <a href="#" class="social-icon sk-button" title="LinkedIn">💼</a>
-                    <a href="#" class="social-icon sk-button" title="Twitter">🐦</a>
-                </div>
-            </div>
+  <!-- LEFT -->
+  <div class="left">
+    <div class="card">
+      <div class="avatar-wrap">
+        <div class="avatar-circle" id="avCircle" onclick="document.getElementById('avIn').click()" title="Change photo">
+          <img id="avImg" src="" alt="">
+          <span class="ini" id="avIni">?</span>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 InternAI — Built with ❤️ and Artificial Intelligence</p>
-        </div>
-    </footer>
+        <input type="file" id="avIn" accept="image/*">
+        <span class="avatar-hint">Click to upload photo</span>
+      </div>
+    </div>
 
-    <script>
-        const DOM_FIELDS = ['fullName', 'email', 'dob', 'fathersName', 'bloodGroup', 'country', 'skills', 'universityName', 'studentId', 'courseOfDegree', 'gradYear', 'postGradYear', 'certifications'];
+    <div class="card">
+      <div class="sec-label">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        RESUME
+      </div>
+      <div class="drop" id="dropZone" onclick="document.getElementById('resIn').click()">
+        <input type="file" id="resIn" accept="application/pdf">
+        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p>Click or drag PDF here</p>
+        <div class="fname" id="fname"></div>
+      </div>
+      <button class="btn-parse" id="parseBtn" disabled>&#9889; PARSE RESUME</button>
+      <div class="pstatus" id="pstatus"></div>
+    </div>
+  </div>
 
-        // 1. Storage Drivers
-        function saveProfile() {
-            const data = {};
-            DOM_FIELDS.forEach(f => data[f] = document.getElementById(f).value);
-            localStorage.setItem('userProfileVault', JSON.stringify(data));
-            
-            // Update the sidebar name live
-            const fullName = data.fullName || 'User';
-            document.getElementById('sidebarName').textContent = fullName;
+  <!-- RIGHT: unified form -->
+  <div class="card">
+    <div class="sec-label">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PROFILE DETAILS
+    </div>
 
-            const sts = document.getElementById('saveStatus');
-            sts.style.display = 'block';
-            setTimeout(() => { sts.style.display = 'none'; }, 3000);
-        }
+    <div class="form-grid">
+      <div class="fg">
+        <label>Full Name</label>
+        <input type="text" id="f-name" placeholder="Your full name">
+      </div>
+      <div class="fg">
+        <label>Email</label>
+        <input type="email" id="f-email" placeholder="you@example.com">
+      </div>
+      <div class="fg">
+        <label>Phone</label>
+        <input type="tel" id="f-phone" placeholder="+91 98765 43210">
+      </div>
+      <div class="fg">
+        <label>Date of Birth</label>
+        <input type="date" id="f-dob">
+      </div>
+      <div class="fg">
+        <label>Location / City</label>
+        <input type="text" id="f-location" placeholder="e.g. Kolkata, India">
+      </div>
+      <div class="fg">
+        <label>Detected Role / Job Title</label>
+        <input type="text" id="f-role" placeholder="e.g. Software Engineer">
+      </div>
+      <div class="fg">
+        <label>Years of Experience</label>
+        <input type="text" id="f-exp" placeholder="e.g. 2 years">
+      </div>
+      <div class="fg">
+        <label>Year of Study</label>
+        <select id="f-year">
+          <option value="">Select</option>
+          <option>1st Year</option><option>2nd Year</option>
+          <option>3rd Year</option><option>4th Year</option>
+          <option>Graduated</option><option>Post Graduate</option>
+        </select>
+      </div>
+      <div class="fg span2">
+        <label>College / University</label>
+        <input type="text" id="f-college" placeholder="e.g. Jadavpur University">
+      </div>
+      <div class="fg span2">
+        <label>Degree / Branch</label>
+        <input type="text" id="f-degree" placeholder="e.g. B.Tech Computer Science">
+      </div>
+      <div class="fg">
+        <label>LinkedIn URL</label>
+        <input type="url" id="f-linkedin" placeholder="https://linkedin.com/in/...">
+      </div>
+      <div class="fg">
+        <label>GitHub URL</label>
+        <input type="url" id="f-github" placeholder="https://github.com/...">
+      </div>
+      <div class="fg span2">
+        <label>Portfolio / Website</label>
+        <input type="url" id="f-portfolio" placeholder="https://yoursite.com">
+      </div>
+      <div class="fg span2">
+        <label>Skills &nbsp;<span style="font-size:9px;color:#555;">(type + Enter to add)</span></label>
+        <input type="text" id="skillIn" placeholder="e.g. Python, React, Docker...">
+        <div class="skills-box" id="skillsBox"></div>
+      </div>
+      <div class="fg span2">
+        <label>Bio / About Me</label>
+        <textarea id="f-bio" placeholder="Tell recruiters about yourself..."></textarea>
+      </div>
+    </div>
 
-        function loadProfile() {
-            const raw = localStorage.getItem('userProfileVault');
-            if(raw) {
-                const data = JSON.parse(raw);
-                DOM_FIELDS.forEach(f => {
-                    if(data[f]) document.getElementById(f).value = data[f];
-                });
-                // Restore sidebar name
-                if(data.fullName) document.getElementById('sidebarName').textContent = data.fullName;
-            }
-        }
-        
-        // Load immediately
-        window.onload = loadProfile;
+    <button class="btn-save" onclick="saveProfile()">&#128190; SAVE PROFILE</button>
+  </div>
+</div>
 
-        // 2. Automated AI Resume Extractor Binding
-        document.getElementById('autoFillBtn').addEventListener('click', async () => {
-            const sid = localStorage.getItem('session_id');
-            if(!sid) {
-                alert("No saved resume found. Please log in again.");
-                return;
-            }
+<div class="toast" id="toast"></div>
 
-            const sts = document.getElementById('autoFillStatus');
-            const uploadBtn = document.getElementById('autoFillBtn');
-            
-            sts.style.display = 'block';
+<script>
+let skills = [];
 
-            // Disable upload button during processing
-            if(uploadBtn) uploadBtn.disabled = true;
+/* ── Init ── */
+function init() {
+  const p = JSON.parse(localStorage.getItem('user_profile') || '{}');
+  const fields = ['name','email','phone','dob','location','role','exp','college','degree','linkedin','github','portfolio','bio'];
+  fields.forEach(k => { if (p[k]) setF(k, p[k]); });
+  if (p.year) document.getElementById('f-year').value = p.year;
+  if (p.avatar) showAvatar(p.avatar);
+  skills = p.skills || [];
+  renderSkills();
+  updateIni(p.name || localStorage.getItem('user_name') || '');
+}
 
-            // Animated stage messages while server processes
-            const stages = [
-                { color: '#ffb84d', msg: '📄 Accessing saved document...' },
-                { color: '#ffb84d', msg: '🔍 Extracting full text via OCR pipeline...' },
-                { color: '#a78bfa', msg: '🧠 Scanning for skills, education & contact details...' },
-                { color: '#38bdf8', msg: '🎓 Detecting university, degree & graduation years...' },
-                { color: '#34d399', msg: '✨ Finalizing profile data — almost there...' },
-            ];
-            let stageIdx = 0;
-            const stageTimer = setInterval(() => {
-                const s = stages[Math.min(stageIdx, stages.length - 1)];
-                sts.style.color = s.color;
-                sts.innerHTML = s.msg;
-                stageIdx++;
-            }, 1800);
+function setF(key, val, glow) {
+  const el = document.getElementById('f-' + key);
+  if (!el) return;
+  el.value = val;
+  if (glow) { el.classList.add('filled'); setTimeout(() => el.classList.remove('filled'), 3000); }
+}
+function updateIni(name) {
+  const ini = name.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2) || '?';
+  document.getElementById('hIni').textContent = ini;
+  document.getElementById('avIni').textContent = ini;
+}
+document.getElementById('f-name').addEventListener('input', e => updateIni(e.target.value));
 
-            const formData = new FormData();
-            formData.append('session_id', sid);
+/* ── Avatar ── */
+function showAvatar(src) {
+  const img = document.getElementById('avImg'); img.src = src; img.style.display = 'block';
+  document.getElementById('avIni').style.display = 'none';
+}
+document.getElementById('avIn').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader(); r.onload = ev => showAvatar(ev.target.result); r.readAsDataURL(f);
+});
 
-            try {
-                const response = await fetch('/api/interview/profile/extract', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                clearInterval(stageTimer);
-                const data = await response.json();
-                
-                if(data.profile) {
-                    const p = data.profile;
-                    if(p.fullName)       document.getElementById('fullName').value       = p.fullName;
-                    if(p.email)          document.getElementById('email').value          = p.email;
-                    if(p.dob)            document.getElementById('dob').value            = p.dob;
-                    if(p.fathersName)    document.getElementById('fathersName').value    = p.fathersName;
-                    if(p.bloodGroup)     document.getElementById('bloodGroup').value     = p.bloodGroup;
-                    if(p.country)        document.getElementById('country').value        = p.country;
-                    if(p.skills)         document.getElementById('skills').value         = p.skills;
-                    if(p.universityName) document.getElementById('universityName').value = p.universityName;
-                    if(p.id)             document.getElementById('studentId').value      = p.id;
-                    if(p.courseOfDegree) document.getElementById('courseOfDegree').value = p.courseOfDegree;
-                    if(p.gradYear)       document.getElementById('gradYear').value       = p.gradYear;
-                    if(p.postGradYear)   document.getElementById('postGradYear').value   = p.postGradYear;
-                    if(p.certifications) document.getElementById('certifications').value = p.certifications;
+/* ── Resume drop ── */
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('over'); const f = e.dataTransfer.files[0]; if (f && f.type === 'application/pdf') setResume(f); });
+document.getElementById('resIn').addEventListener('change', e => { if (e.target.files[0]) setResume(e.target.files[0]); });
+function setResume(f) {
+  document.getElementById('fname').textContent = '\uD83D\uDCC4 ' + f.name;
+  document.getElementById('parseBtn').disabled = false;
+  document.getElementById('resIn')._f = f;
+}
 
-                    sts.style.color = '#00e4b8';
-                    sts.innerHTML = '✅ All fields populated from your resume! Review and click "Save Profile Settings".';
-                } else {
-                    sts.style.color = '#ff5c5c';
-                    sts.innerHTML = '❌ Extraction Error: ' + (data.error || 'Invalid file format.');
-                }
-            } catch (err) {
-                clearInterval(stageTimer);
-                console.error(err);
-                sts.style.color = '#ff5c5c';
-                sts.innerHTML = '❌ Server connection failed. Ensure Flask backend is running.';
-            } finally {
-                if(uploadBtn) uploadBtn.disabled = false;
-            }
-        });
-    </script>
+/* ── Parse ── */
+document.getElementById('parseBtn').addEventListener('click', async () => {
+  const file = document.getElementById('resIn')._f; if (!file) return;
+  const btn = document.getElementById('parseBtn'), st = document.getElementById('pstatus');
+  btn.disabled = true; btn.textContent = 'PARSING...';
+  st.textContent = 'Sending to AI engine...'; st.className = 'pstatus';
+  try {
+    // upload
+    const uF = new FormData(); uF.append('resume', file);
+    const tok = localStorage.getItem('user_token') || localStorage.getItem('token');
+    const uR = await fetch('/api/auth/upload-resume', { method:'POST', headers: tok ? {'Authorization':'Bearer '+tok} : {}, body: uF });
+    if (uR.ok) { const d = await uR.json(); if (d.user?.session_id) localStorage.setItem('session_id', d.user.session_id); }
+
+    // analyze
+    const aF = new FormData();
+    const sid = localStorage.getItem('session_id');
+    if (sid) aF.append('session_id', sid); else aF.append('resume', file);
+    const aR = await fetch('/api/dashboard/analyze-resume', { method:'POST', body: aF });
+    const data = await aR.json();
+    if (data.error) throw new Error(data.error);
+
+    // auto-fill all matching fields with glow
+    if (data.name)                { setF('name', data.name, true); updateIni(data.name); localStorage.setItem('user_name', data.name); }
+    if (data.email)               setF('email', data.email, true);
+    if (data.phone)               setF('phone', data.phone, true);
+    if (data.location)            setF('location', data.location, true);
+    if (data.role)                { setF('role', data.role, true); localStorage.setItem('user_role', data.role); }
+    if (data.experience_years)    setF('exp', data.experience_years + ' years', true);
+    if (data.college)             setF('college', data.college, true);
+    if (data.degree)              setF('degree', data.degree, true);
+    if (data.linkedin)            setF('linkedin', data.linkedin, true);
+    if (data.github)              setF('github', data.github, true);
+    if (data.bio || data.summary) setF('bio', data.bio || data.summary, true);
+
+    // skills
+    const newSkills = [...(data.skills || []), ...(data.keywords || [])];
+    if (newSkills.length) { skills = [...new Set([...skills, ...newSkills])]; renderSkills(); }
+
+    st.textContent = '\u2713 Fields filled from resume!'; st.className = 'pstatus ok';
+    toast('\u2713 Resume parsed successfully!');
+  } catch(err) {
+    st.textContent = 'Error: ' + err.message; st.className = 'pstatus err';
+  } finally {
+    btn.disabled = false; btn.textContent = '\u26A1 PARSE RESUME';
+  }
+});
+
+/* ── Skills ── */
+document.getElementById('skillIn').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ',') return; e.preventDefault();
+  const v = e.target.value.trim().replace(/,$/, '');
+  if (v && !skills.includes(v)) { skills.push(v); renderSkills(); } e.target.value = '';
+});
+function renderSkills() {
+  document.getElementById('skillsBox').innerHTML = skills.map((s,i) =>
+    `<span class="stag">${s}<button onclick="rmSkill(${i})">&#215;</button></span>`).join('');
+}
+function rmSkill(i) { skills.splice(i,1); renderSkills(); }
+
+/* ── Save ── */
+function saveProfile() {
+  const g = id => document.getElementById(id)?.value || '';
+  const profile = {
+    name:g('f-name'), email:g('f-email'), phone:g('f-phone'), dob:g('f-dob'),
+    location:g('f-location'), role:g('f-role'), exp:g('f-exp'),
+    year:g('f-year'), college:g('f-college'), degree:g('f-degree'),
+    linkedin:g('f-linkedin'), github:g('f-github'), portfolio:g('f-portfolio'),
+    bio:g('f-bio'), skills
+  };
+  const av = document.getElementById('avImg').src;
+  if (av && av.startsWith('data:')) profile.avatar = av;
+  localStorage.setItem('user_profile', JSON.stringify(profile));
+  localStorage.setItem('user_name',  profile.name);
+  localStorage.setItem('user_email', profile.email);
+  localStorage.setItem('user_role',  profile.role);
+  toast('\u2713 Profile saved!');
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+init();
+</script>
 </body>
 </html>

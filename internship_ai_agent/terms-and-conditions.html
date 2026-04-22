@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms & Conditions | Internship Finder AI</title>
+<meta name="description" content="Terms and Conditions for using the Internship Finder AI Agent platform.">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon-cyan: #00f3ff;
+    --neon-blue: #0088ff;
+    --neon-green: #00ff88;
+    --neon-purple: #b500ff;
+    --bg-panel: rgba(8, 16, 33, 0.75);
+    --border-cyan: rgba(0, 243, 255, 0.35);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #070512;
+    color: #ccc;
+    min-height: 100vh;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* Background */
+  .bg-mesh {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image:
+      linear-gradient(rgba(107, 33, 168, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 75, 180, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -3; pointer-events: none;
+    animation: panGrid 25s linear infinite;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 90%);
+  }
+  @keyframes panGrid { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+  .light-stream {
+    position: fixed; width: 2px; height: 100vh; top: -50%;
+    background: linear-gradient(to bottom, transparent, var(--neon-cyan), transparent);
+    opacity: 0.35; z-index: -2; pointer-events: none;
+  }
+  .stream-1 { left: 8%; animation: fall 10s linear infinite; }
+  .stream-2 { right: 15%; animation: fall 13s linear infinite 6s; }
+  @keyframes fall { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
+
+  /* Header */
+  .hud-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 40px; border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+    background: linear-gradient(180deg, rgba(0,10,30,0.9) 0%, transparent 100%);
+    position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px);
+  }
+  .brand-wrapper { display: flex; align-items: center; gap: 18px; }
+  .user-avatar-hex {
+    width: 50px; height: 56px;
+    background: rgba(0, 243, 255, 0.1); border: 2px solid var(--neon-cyan);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: grid; place-items: center; box-shadow: 0 0 12px var(--neon-cyan);
+  }
+  .brand-title h1 {
+    font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #fff, var(--neon-purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .btn-back {
+    background: transparent; border: 1px solid var(--neon-blue);
+    color: var(--neon-cyan); padding: 8px 24px;
+    font-family: 'Rajdhani', sans-serif; font-size: 15px;
+    font-weight: 600; letter-spacing: 1px; border-radius: 4px;
+    cursor: pointer; transition: 0.3s; text-decoration: none;
+    box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.15);
+  }
+  .btn-back:hover { background: rgba(0, 136, 255, 0.2); box-shadow: 0 0 18px var(--neon-blue); }
+
+  /* Hero */
+  .hero { text-align: center; padding: 55px 20px 35px; }
+  .hero h1 {
+    font-family: 'Rajdhani', sans-serif; font-size: 46px; font-weight: 800;
+    color: var(--neon-cyan); letter-spacing: 4px; text-transform: uppercase;
+    text-shadow: 0 0 22px rgba(0, 243, 255, 0.6); margin-bottom: 12px;
+  }
+  .hero p { font-size: 16px; color: #888; max-width: 650px; margin: 0 auto; }
+  .hero .last-updated {
+    display: inline-block; margin-top: 14px;
+    background: rgba(0, 243, 255, 0.08); border: 1px solid var(--border-cyan);
+    padding: 5px 16px; border-radius: 20px;
+    font-size: 13px; color: var(--neon-cyan); letter-spacing: 1px;
+  }
+
+  /* Layout */
+  .container { max-width: 900px; margin: 0 auto; padding: 10px 20px 60px; }
+
+  /* Panel */
+  .sci-panel {
+    background: var(--bg-panel); backdrop-filter: blur(8px);
+    border: 1px solid var(--border-cyan); border-radius: 14px;
+    box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.04), 0 0 15px rgba(0,0,0,0.5);
+    padding: 30px 36px; position: relative; margin-bottom: 24px;
+    transition: box-shadow 0.3s;
+  }
+  .sci-panel:hover { box-shadow: inset 0 0 25px rgba(0, 243, 255, 0.08), 0 0 20px rgba(0, 243, 255, 0.15); }
+  .sci-panel::before {
+    content: ''; position: absolute; top: -1px; left: -1px; width: 18px; height: 18px;
+    border-top: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan);
+    border-top-left-radius: 14px;
+  }
+  .sci-panel::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px; width: 18px; height: 18px;
+    border-bottom: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan);
+    border-bottom-right-radius: 14px;
+  }
+
+  /* Section heading */
+  .section-heading {
+    font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700;
+    letter-spacing: 2px; color: #fff; text-transform: uppercase;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+  }
+  .section-heading .icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(0, 243, 255, 0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--neon-cyan); flex-shrink: 0;
+  }
+
+  /* Typography */
+  p { color: #bbb; font-size: 15px; margin-bottom: 12px; }
+  ul { padding-left: 22px; margin-bottom: 12px; }
+  ul li { color: #bbb; font-size: 15px; margin-bottom: 7px; }
+  ul li::marker { color: var(--neon-cyan); }
+  strong { color: #fff; }
+  a { color: var(--neon-cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .highlight-box {
+    background: rgba(0, 243, 255, 0.05);
+    border-left: 3px solid var(--neon-cyan);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px; margin: 16px 0;
+    color: #aaa; font-size: 14px;
+  }
+
+  .warning-box {
+    background: rgba(255, 68, 68, 0.06);
+    border-left: 3px solid #ff4444;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px; margin: 16px 0;
+    color: #aaa; font-size: 14px;
+  }
+
+  /* Footer */
+  .hud-footer {
+    margin-top: 60px; border-top: 1px solid rgba(0, 243, 255, 0.25);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+    background: linear-gradient(180deg, rgba(7,5,18,0.2) 0%, #000 100%);
+    padding: 30px 60px 20px; font-size: 13px;
+    backdrop-filter: blur(10px); text-align: center; color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .hud-header { flex-direction: column; gap: 14px; }
+    .hero h1 { font-size: 34px; }
+    .sci-panel { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="light-stream stream-1"></div>
+<div class="light-stream stream-2"></div>
+
+<!-- HEADER -->
+<header class="hud-header">
+  <div class="brand-wrapper">
+    <div class="user-avatar-hex">
+      <span style="font-size:18px;font-weight:700;color:#fff;">AI</span>
+    </div>
+    <div class="brand-title"><h1>INTERNSHIP FINDER</h1></div>
+  </div>
+  <a href="/user-dashboard" class="btn-back">RETURN TO DASHBOARD</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>TERMS &amp; CONDITIONS</h1>
+  <p>Please read these terms carefully before using the Internship Finder AI Agent platform.</p>
+  <span class="last-updated">Last Updated: April 23, 2026</span>
+</div>
+
+<div class="container">
+
+  <!-- 1. Acceptance -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      1. Acceptance of Terms
+    </h2>
+    <p>By accessing, registering, or using the <strong>Internship Finder AI Agent</strong> ("the Platform"), you confirm that you have read, understood, and agree to be bound by these Terms and Conditions ("Terms"). If you do not agree to any part of these Terms, you must not use the Platform.</p>
+    <div class="highlight-box">
+      These Terms constitute a legally binding agreement between you (the "User") and the development team of Internship Finder AI Agent ("we", "us", or "our").
+    </div>
+  </div>
+
+  <!-- 2. Description of Service -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
+      2. Description of Service
+    </h2>
+    <p>The Internship Finder AI Agent is an AI-powered career preparation platform that provides the following services:</p>
+    <ul>
+      <li>Automated resume parsing and skill extraction using Natural Language Processing (NLP).</li>
+      <li>AI-driven internship and job matching based on your extracted profile.</li>
+      <li>Mock interview simulation with dynamically generated technical and behavioral questions.</li>
+      <li>Real-time proctoring and violation detection during interview sessions.</li>
+      <li>Skill gap analysis and resume keyword optimization suggestions.</li>
+      <li>Global market trend tracking for technology roles.</li>
+    </ul>
+    <p>The Platform is provided on an <strong>"as is" and "as available"</strong> basis for academic and demonstration purposes.</p>
+  </div>
+
+  <!-- 3. Eligibility -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      3. Eligibility
+    </h2>
+    <p>To use the Platform, you must meet the following criteria:</p>
+    <ul>
+      <li>You must be at least <strong>16 years of age</strong>.</li>
+      <li>You must provide accurate and truthful information during registration.</li>
+      <li>You must not be prohibited by applicable law from using AI-powered career tools.</li>
+      <li>You must have legal authority to upload any documents (e.g., resumes) you submit to the Platform.</li>
+    </ul>
+    <p>By registering, you represent and warrant that you meet all eligibility requirements.</p>
+  </div>
+
+  <!-- 4. User Accounts -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+      4. User Accounts &amp; Security
+    </h2>
+    <p>When you create an account, you are responsible for:</p>
+    <ul>
+      <li>Maintaining the confidentiality of your login credentials.</li>
+      <li>All activity that occurs under your account.</li>
+      <li>Notifying us immediately of any unauthorized use of your account.</li>
+      <li>Ensuring your password is strong and not shared with others.</li>
+    </ul>
+    <p>We store your password as a <strong>SHA-256 cryptographic hash</strong> — we do not store plain-text passwords. You acknowledge that no security system is impenetrable and assume responsibility for any consequences arising from account compromise due to your actions.</p>
+  </div>
+
+  <!-- 5. Acceptable Use -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>
+      5. Acceptable Use Policy
+    </h2>
+    <p>You agree <strong>not</strong> to use the Platform for any of the following prohibited activities:</p>
+    <ul>
+      <li>Uploading false, fraudulent, or third-party resumes without authorization.</li>
+      <li>Attempting to reverse-engineer, scrape, or extract proprietary AI models or data pipelines.</li>
+      <li>Submitting malicious files, scripts, or payloads to the upload endpoint.</li>
+      <li>Creating multiple accounts to bypass limitations or abuse the system.</li>
+      <li>Using automated bots or scripts to interact with the Platform.</li>
+      <li>Harassing, impersonating, or defaming other users or the development team.</li>
+      <li>Using the Platform for any commercial purpose without express written permission.</li>
+      <li>Attempting to gain unauthorized access to backend systems, databases, or server files.</li>
+    </ul>
+    <div class="warning-box">
+      Violation of this Acceptable Use Policy may result in immediate account termination and potential legal action.
+    </div>
+  </div>
+
+  <!-- 6. Intellectual Property -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+      6. Intellectual Property
+    </h2>
+    <p>All content, design elements, source code, AI workflows, and interface components of the Platform are the intellectual property of the Internship Finder AI Agent development team, unless otherwise stated.</p>
+    <ul>
+      <li>You may not copy, reproduce, modify, or distribute any part of the Platform without prior written consent.</li>
+      <li>The source code is hosted on GitHub for academic transparency. Personal or academic use is permitted with proper attribution.</li>
+      <li>Third-party trademarks (e.g., Google, Microsoft, Amazon) referenced in the Platform are the property of their respective owners.</li>
+    </ul>
+    <p>You retain full ownership of your personal data, resume content, and any responses submitted during mock interview sessions.</p>
+  </div>
+
+  <!-- 7. AI-Generated Content Disclaimer -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+      7. AI-Generated Content Disclaimer
+    </h2>
+    <p>The Platform uses third-party AI APIs (including OpenAI) to generate interview questions, skill analysis, job recommendations, and resume suggestions. You acknowledge that:</p>
+    <ul>
+      <li>AI-generated content may be <strong>inaccurate, incomplete, or biased</strong> and should not be solely relied upon for career decisions.</li>
+      <li>Job match scores and market trend data are algorithmic estimates, not guarantees of employment outcomes.</li>
+      <li>Mock interview results are for practice purposes only and do not represent actual hiring assessments.</li>
+      <li>Resume suggestions are AI recommendations and should be reviewed by a human career advisor before use.</li>
+    </ul>
+    <div class="highlight-box">
+      We make no guarantees regarding job placement, interview success, or career advancement as a result of using this Platform.
+    </div>
+  </div>
+
+  <!-- 8. Third-Party Links & Services -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+      8. Third-Party Links &amp; Services
+    </h2>
+    <p>The Platform may display links to third-party websites (such as job listing portals, GitHub, LinkedIn) and integrates with external APIs. We are not responsible for:</p>
+    <ul>
+      <li>The content, accuracy, or availability of external websites.</li>
+      <li>Data practices of third-party APIs (OpenAI, SerpAPI, etc.).</li>
+      <li>Any losses incurred through interactions with third-party job platforms.</li>
+    </ul>
+    <p>Use of third-party services is governed by their respective terms of service and privacy policies.</p>
+  </div>
+
+  <!-- 9. Limitation of Liability -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      9. Limitation of Liability
+    </h2>
+    <p>To the fullest extent permitted by law, the Internship Finder AI Agent development team shall not be liable for:</p>
+    <ul>
+      <li>Any direct, indirect, incidental, or consequential damages arising from use of the Platform.</li>
+      <li>Loss of data, career opportunities, or income resulting from reliance on AI-generated content.</li>
+      <li>Service outages, bugs, or errors in the Platform's functionality.</li>
+      <li>Unauthorized access to your account due to your own negligence.</li>
+      <li>Actions or content generated by third-party AI systems integrated into the Platform.</li>
+    </ul>
+    <div class="warning-box">
+      <strong>This Platform is an academic project.</strong> It is provided without any warranty, express or implied, including but not limited to merchantability or fitness for a particular purpose.
+    </div>
+  </div>
+
+  <!-- 10. Termination -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></span>
+      10. Termination
+    </h2>
+    <p>We reserve the right to suspend or permanently terminate your access to the Platform at any time, with or without notice, if you:</p>
+    <ul>
+      <li>Violate any provision of these Terms.</li>
+      <li>Engage in fraudulent or harmful activities on the Platform.</li>
+      <li>Abuse system resources in a way that degrades performance for other users.</li>
+    </ul>
+    <p>You may terminate your own account at any time by contacting us and requesting account deletion. Upon termination, your data will be removed from our systems as described in our <a href="/privacy-policy">Privacy Policy</a>.</p>
+  </div>
+
+  <!-- 11. Changes to Terms -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
+      11. Changes to These Terms
+    </h2>
+    <p>We reserve the right to modify these Terms at any time. When changes are made, we will update the "Last Updated" date at the top of this page. Your continued use of the Platform after changes are posted constitutes acceptance of the revised Terms.</p>
+    <p>We recommend reviewing these Terms periodically to stay informed about your obligations and rights as a user.</p>
+  </div>
+
+  <!-- 12. Governing Law -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6l9-3 9 3v7c0 5-4 8-9 9-5-1-9-4-9-9V6z"/></svg></span>
+      12. Governing Law
+    </h2>
+    <p>These Terms shall be governed by and construed in accordance with the laws of <strong>India</strong>, without regard to its conflict of law principles. Any disputes arising out of or relating to these Terms shall be subject to the exclusive jurisdiction of the courts of <strong>West Bengal, India</strong>.</p>
+  </div>
+
+  <!-- 13. Contact -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+      13. Contact Us
+    </h2>
+    <p>If you have any questions about these Terms and Conditions, please contact our development team:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:friendsgamingproject438@gmail.com">friendsgamingproject438@gmail.com</a></li>
+      <li><strong>GitHub:</strong> <a href="https://github.com/SUBHRADIP-ADHIKARI7/AI-INTERNSHIP-PROJECT" target="_blank">github.com/SUBHRADIP-ADHIKARI7/AI-INTERNSHIP-PROJECT</a></li>
+      <li><strong>Project:</strong> Internship Finder AI Agent — Academic Project, 2026</li>
+    </ul>
+    <p style="margin-top: 12px;">Also see: <a href="/privacy-policy">Privacy Policy</a> &nbsp;|&nbsp; <a href="/about-us">About Us</a></p>
+  </div>
+
+</div>
+
+<footer class="hud-footer">
+  <p>&copy; 2026 Internship Finder AI Agent. All Rights Reserved. &nbsp;|&nbsp;
+    <a href="/privacy-policy">Privacy Policy</a> &nbsp;|&nbsp;
+    <a href="/about-us">About Us</a> &nbsp;|&nbsp;
+    <a href="/user-dashboard">Dashboard</a>
+  </p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy | Internship Finder AI</title>
+<meta name="description" content="Privacy Policy for the Internship Finder AI Agent — how we collect, use, and protect your data.">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon-cyan: #00f3ff;
+    --neon-blue: #0088ff;
+    --neon-green: #00ff88;
+    --neon-purple: #b500ff;
+    --bg-panel: rgba(8, 16, 33, 0.75);
+    --border-cyan: rgba(0, 243, 255, 0.35);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #070512;
+    color: #ccc;
+    min-height: 100vh;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* Background Grid */
+  .bg-mesh {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image:
+      linear-gradient(rgba(107, 33, 168, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 75, 180, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -3; pointer-events: none;
+    animation: panGrid 25s linear infinite;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 90%);
+  }
+  @keyframes panGrid { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+
+  /* Light streams */
+  .light-stream {
+    position: fixed; width: 2px; height: 100vh; top: -50%;
+    background: linear-gradient(to bottom, transparent, var(--neon-cyan), transparent);
+    opacity: 0.4; z-index: -2; pointer-events: none;
+  }
+  .stream-1 { left: 10%; animation: fall 9s linear infinite; }
+  .stream-2 { right: 18%; animation: fall 14s linear infinite 5s; }
+  @keyframes fall { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
+
+  /* Header */
+  .hud-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+    background: linear-gradient(180deg, rgba(0,10,30,0.9) 0%, transparent 100%);
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .brand-wrapper { display: flex; align-items: center; gap: 18px; }
+  .user-avatar-hex {
+    width: 50px; height: 56px;
+    background: rgba(0, 243, 255, 0.1); border: 2px solid var(--neon-cyan);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: grid; place-items: center;
+    box-shadow: 0 0 12px var(--neon-cyan);
+  }
+  .brand-title h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px; font-weight: 700; letter-spacing: 2px;
+    background: linear-gradient(90deg, #fff, var(--neon-purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .btn-back {
+    background: transparent; border: 1px solid var(--neon-blue);
+    color: var(--neon-cyan); padding: 8px 24px;
+    font-family: 'Rajdhani', sans-serif; font-size: 15px;
+    font-weight: 600; letter-spacing: 1px; border-radius: 4px;
+    cursor: pointer; transition: 0.3s; text-decoration: none;
+    box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.15);
+  }
+  .btn-back:hover { background: rgba(0, 136, 255, 0.2); box-shadow: 0 0 18px var(--neon-blue); }
+
+  /* Hero */
+  .hero {
+    text-align: center; padding: 55px 20px 35px;
+  }
+  .hero h1 {
+    font-family: 'Rajdhani', sans-serif; font-size: 46px; font-weight: 800;
+    color: var(--neon-cyan); letter-spacing: 4px; text-transform: uppercase;
+    text-shadow: 0 0 22px rgba(0, 243, 255, 0.6); margin-bottom: 12px;
+  }
+  .hero p { font-size: 16px; color: #888; max-width: 650px; margin: 0 auto; }
+  .hero .last-updated {
+    display: inline-block; margin-top: 14px;
+    background: rgba(0, 243, 255, 0.08); border: 1px solid var(--border-cyan);
+    padding: 5px 16px; border-radius: 20px;
+    font-size: 13px; color: var(--neon-cyan); letter-spacing: 1px;
+  }
+
+  /* Container */
+  .container { max-width: 900px; margin: 0 auto; padding: 10px 20px 60px; }
+
+  /* Sci-fi Panel */
+  .sci-panel {
+    background: var(--bg-panel); backdrop-filter: blur(8px);
+    border: 1px solid var(--border-cyan); border-radius: 14px;
+    box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.04), 0 0 15px rgba(0,0,0,0.5);
+    padding: 30px 36px; position: relative; margin-bottom: 24px;
+    transition: box-shadow 0.3s;
+  }
+  .sci-panel:hover {
+    box-shadow: inset 0 0 25px rgba(0, 243, 255, 0.08), 0 0 20px rgba(0, 243, 255, 0.15);
+  }
+  .sci-panel::before {
+    content: ''; position: absolute; top: -1px; left: -1px;
+    width: 18px; height: 18px;
+    border-top: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan);
+    border-top-left-radius: 14px;
+  }
+  .sci-panel::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 18px; height: 18px;
+    border-bottom: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan);
+    border-bottom-right-radius: 14px;
+  }
+
+  /* Section heading */
+  .section-heading {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px; font-weight: 700; letter-spacing: 2px;
+    color: #fff; text-transform: uppercase;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+  }
+  .section-heading .icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(0, 243, 255, 0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--neon-cyan); flex-shrink: 0;
+  }
+
+  /* Text */
+  p { color: #bbb; font-size: 15px; margin-bottom: 12px; }
+  ul { padding-left: 22px; margin-bottom: 12px; }
+  ul li { color: #bbb; font-size: 15px; margin-bottom: 6px; }
+  ul li::marker { color: var(--neon-cyan); }
+  strong { color: #fff; }
+  a { color: var(--neon-cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Highlight box */
+  .highlight-box {
+    background: rgba(0, 243, 255, 0.05);
+    border-left: 3px solid var(--neon-cyan);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px; margin: 16px 0;
+    color: #aaa; font-size: 14px; font-style: italic;
+  }
+
+  /* Footer */
+  .hud-footer {
+    margin-top: 60px; border-top: 1px solid rgba(0, 243, 255, 0.25);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+    background: linear-gradient(180deg, rgba(7,5,18,0.2) 0%, #000 100%);
+    padding: 30px 60px 20px; font-size: 13px;
+    backdrop-filter: blur(10px); text-align: center; color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .hud-header { flex-direction: column; gap: 14px; }
+    .hero h1 { font-size: 34px; }
+    .sci-panel { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="light-stream stream-1"></div>
+<div class="light-stream stream-2"></div>
+
+<!-- HEADER -->
+<header class="hud-header">
+  <div class="brand-wrapper">
+    <div class="user-avatar-hex">
+      <span style="font-size:18px;font-weight:700;color:#fff;">AI</span>
+    </div>
+    <div class="brand-title">
+      <h1>INTERNSHIP FINDER</h1>
+    </div>
+  </div>
+  <a href="/user-dashboard" class="btn-back">RETURN TO DASHBOARD</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>PRIVACY POLICY</h1>
+  <p>How the Internship Finder AI Agent collects, uses, and protects your personal information.</p>
+  <span class="last-updated">Last Updated: April 23, 2026</span>
+</div>
+
+<div class="container">
+
+  <!-- 1. Introduction -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </span>
+      1. Introduction
+    </h2>
+    <p>Welcome to the <strong>Internship Finder AI Agent</strong> ("the Platform", "we", "our", or "us"). This Privacy Policy explains how we collect, use, store, and protect your personal data when you use our AI-powered career preparation platform.</p>
+    <p>By registering, uploading your resume, or using any feature of this Platform, you agree to the terms of this Privacy Policy. If you do not agree, please refrain from using the Platform.</p>
+    <div class="highlight-box">
+      This platform is a student project built for academic and demonstration purposes. It is not a commercial service.
+    </div>
+  </div>
+
+  <!-- 2. Information We Collect -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </span>
+      2. Information We Collect
+    </h2>
+    <p>We collect the following types of information to provide and improve our services:</p>
+    <ul>
+      <li><strong>Account Information:</strong> Your full name, email address, and hashed password provided during registration.</li>
+      <li><strong>Resume Data:</strong> PDF resume files uploaded by you. We parse these to extract skills, experience, and role information.</li>
+      <li><strong>Extracted Profile Data:</strong> Skills, inferred job roles, years of experience, and career highlights derived from your resume using AI models.</li>
+      <li><strong>Session Identifiers:</strong> A unique <code>session_id</code> (UUID) is generated upon upload to associate your resume data across features without requiring repeated uploads.</li>
+      <li><strong>Mock Interview Responses:</strong> Answers, proctoring logs, and violation flags generated during your AI mock interview sessions.</li>
+      <li><strong>Usage Data:</strong> General interaction data (e.g., which features you use) for improving the system. No IP addresses or device fingerprints are stored.</li>
+    </ul>
+  </div>
+
+  <!-- 3. How We Use Your Information -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </span>
+      3. How We Use Your Information
+    </h2>
+    <p>Your data is used exclusively to provide the features of this Platform:</p>
+    <ul>
+      <li><strong>Resume Analysis:</strong> To extract skills, calculate ATS compatibility scores, and identify skill gaps relative to market demand.</li>
+      <li><strong>Internship Matching:</strong> To search and rank live job listings that align with your extracted skills and target role.</li>
+      <li><strong>Mock Interview Generation:</strong> To dynamically generate technical and behavioral interview questions tailored to your profile.</li>
+      <li><strong>Dashboard Personalization:</strong> To populate your dashboard with your name, role, skills, and matched opportunities.</li>
+      <li><strong>AI Model Prompts:</strong> Portions of your resume text and skills are sent to third-party AI APIs (such as OpenAI) as part of generating recommendations. These are governed by the respective provider's privacy policies.</li>
+    </ul>
+    <p>We do <strong>not</strong> use your data for advertising, profiling for third parties, or any purpose beyond what is described above.</p>
+  </div>
+
+  <!-- 4. Data Storage & Security -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </span>
+      4. Data Storage & Security
+    </h2>
+    <p>All data is stored locally on the server hosting this application. Specifically:</p>
+    <ul>
+      <li><strong>Resume Files:</strong> Stored as <code>.pdf</code> files in the <code>/uploads/</code> directory, referenced by your unique session ID.</li>
+      <li><strong>User Records:</strong> Stored in a local JSON file (<code>users.json</code>). Passwords are stored as <strong>SHA-256 hashed values</strong> — never in plain text.</li>
+      <li><strong>Authentication Tokens:</strong> Randomly generated hex tokens used for session verification.</li>
+    </ul>
+    <p>We implement the following security practices:</p>
+    <ul>
+      <li>Password hashing using SHA-256 before storage.</li>
+      <li>CORS (Cross-Origin Resource Sharing) policies are enforced via Flask-CORS.</li>
+      <li>File upload size is limited to <strong>32 MB</strong> to prevent abuse.</li>
+      <li>Only PDF files are accepted for resume upload.</li>
+    </ul>
+    <div class="highlight-box">
+      As this is a local/demo project, data is not encrypted at rest. Do not upload sensitive personal documents if you have concerns about local server security.
+    </div>
+  </div>
+
+  <!-- 5. Third-Party Services -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </span>
+      5. Third-Party Services
+    </h2>
+    <p>This Platform integrates with the following external services. Please review their respective privacy policies:</p>
+    <ul>
+      <li><strong>OpenAI API:</strong> Used to generate skill analysis, interview questions, and AI agent responses. Data sent includes resume text and extracted skills. See <a href="https://openai.com/policies/privacy-policy" target="_blank">OpenAI Privacy Policy</a>.</li>
+      <li><strong>LangChain / LangGraph:</strong> Framework used to orchestrate AI agent workflows. No data is independently stored by these libraries.</li>
+      <li><strong>SerpAPI / Search Tools:</strong> Used to scrape live internship listings based on your skills. Only skill keywords are sent, not personal details.</li>
+      <li><strong>Google Fonts:</strong> Used to load the Inter and Rajdhani typefaces. Google may log the font request. See <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a>.</li>
+    </ul>
+  </div>
+
+  <!-- 6. Data Retention -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+      </span>
+      6. Data Retention
+    </h2>
+    <p>Data is retained for as long as the application is running on the local server. Specifically:</p>
+    <ul>
+      <li>Your uploaded resume PDF is stored until manually deleted from the server's <code>/uploads/</code> folder.</li>
+      <li>Your user profile (name, email, hashed password, skills) is retained in <code>users.json</code> indefinitely until deleted.</li>
+      <li>Mock interview session data exists only in memory during the session and is not permanently stored between server restarts.</li>
+    </ul>
+    <p>You may request deletion of your data by contacting us at the email address listed in the footer.</p>
+  </div>
+
+  <!-- 7. Your Rights -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </span>
+      7. Your Rights
+    </h2>
+    <p>As a user of this Platform, you have the following rights regarding your personal data:</p>
+    <ul>
+      <li><strong>Right to Access:</strong> You may request a copy of the data we hold about you.</li>
+      <li><strong>Right to Deletion:</strong> You may request permanent deletion of your account and all associated data.</li>
+      <li><strong>Right to Correction:</strong> You may request correction of inaccurate data stored about you.</li>
+      <li><strong>Right to Withdraw Consent:</strong> You may stop using the platform at any time. This does not automatically delete previously stored data.</li>
+    </ul>
+    <p>To exercise any of these rights, please contact us at <a href="mailto:friendsgamingproject438@gmail.com">friendsgamingproject438@gmail.com</a>.</p>
+  </div>
+
+  <!-- 8. Children's Privacy -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      8. Children's Privacy
+    </h2>
+    <p>This Platform is intended for use by students and professionals aged <strong>16 years and above</strong>. We do not knowingly collect personal data from children under the age of 16. If you believe a minor has registered without parental consent, please contact us immediately so we can delete the account.</p>
+  </div>
+
+  <!-- 9. Changes to This Policy -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </span>
+      9. Changes to This Policy
+    </h2>
+    <p>We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated "Last Updated" date. Continued use of the Platform after changes are posted constitutes your acceptance of the revised policy.</p>
+    <p>We recommend reviewing this page periodically to stay informed about how we are protecting your information.</p>
+  </div>
+
+  <!-- 10. Contact -->
+  <div class="sci-panel">
+    <h2 class="section-heading">
+      <span class="icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </span>
+      10. Contact Us
+    </h2>
+    <p>If you have any questions, concerns, or requests regarding this Privacy Policy, please reach out to the development team:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:friendsgamingproject438@gmail.com">friendsgamingproject438@gmail.com</a></li>
+      <li><strong>GitHub:</strong> <a href="https://github.com/SUBHRADIP-ADHIKARI7/AI-INTERNSHIP-PROJECT" target="_blank">github.com/SUBHRADIP-ADHIKARI7/AI-INTERNSHIP-PROJECT</a></li>
+      <li><strong>Project:</strong> Internship Finder AI Agent — Academic Project, 2026</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer class="hud-footer">
+  <p>&copy; 2026 Internship Finder AI Agent. All Rights Reserved. &nbsp;|&nbsp;
+    <a href="/about-us">About Us</a> &nbsp;|&nbsp;
+    <a href="/user-dashboard">Dashboard</a>
+  </p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Internship Finder AI</title>
+<meta name="description" content="Get in touch with the Internship Finder AI Agent development team.">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon-cyan: #00f3ff;
+    --neon-blue: #0088ff;
+    --neon-green: #00ff88;
+    --neon-purple: #b500ff;
+    --bg-panel: rgba(8, 16, 33, 0.75);
+    --border-cyan: rgba(0, 243, 255, 0.35);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #070512;
+    color: #ccc;
+    min-height: 100vh;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+  .bg-mesh {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image:
+      linear-gradient(rgba(107,33,168,0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,75,180,0.1) 1px, transparent 1px);
+    background-size: 50px 50px; z-index: -3; pointer-events: none;
+    animation: panGrid 25s linear infinite;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 90%);
+  }
+  @keyframes panGrid { to { background-position: 0 50px; } }
+  .light-stream {
+    position: fixed; width: 2px; height: 100vh; top: -50%;
+    background: linear-gradient(to bottom, transparent, var(--neon-cyan), transparent);
+    opacity: 0.35; z-index: -2; pointer-events: none;
+  }
+  .stream-1 { left: 8%; animation: fall 10s linear infinite; }
+  .stream-2 { right: 15%; animation: fall 13s linear infinite 6s; }
+  @keyframes fall { to { transform: translateY(200%); } }
+
+  /* Header */
+  .hud-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 40px; border-bottom: 1px solid rgba(0,243,255,0.2);
+    background: linear-gradient(180deg, rgba(0,10,30,0.9) 0%, transparent 100%);
+    position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px);
+  }
+  .brand-wrapper { display: flex; align-items: center; gap: 18px; }
+  .user-avatar-hex {
+    width: 50px; height: 56px;
+    background: rgba(0,243,255,0.1); border: 2px solid var(--neon-cyan);
+    clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+    display: grid; place-items: center; box-shadow: 0 0 12px var(--neon-cyan);
+  }
+  .brand-title h1 {
+    font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 2px;
+    background: linear-gradient(90deg, #fff, var(--neon-purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .btn-back {
+    background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-cyan);
+    padding: 8px 24px; font-family: 'Rajdhani', sans-serif; font-size: 15px;
+    font-weight: 600; letter-spacing: 1px; border-radius: 4px; cursor: pointer;
+    transition: 0.3s; text-decoration: none; box-shadow: inset 0 0 10px rgba(0,136,255,0.15);
+  }
+  .btn-back:hover { background: rgba(0,136,255,0.2); box-shadow: 0 0 18px var(--neon-blue); }
+
+  /* Hero */
+  .hero { text-align: center; padding: 55px 20px 35px; }
+  .hero h1 {
+    font-family: 'Rajdhani', sans-serif; font-size: 46px; font-weight: 800;
+    color: var(--neon-cyan); letter-spacing: 4px; text-transform: uppercase;
+    text-shadow: 0 0 22px rgba(0,243,255,0.6); margin-bottom: 12px;
+  }
+  .hero p { font-size: 16px; color: #888; max-width: 600px; margin: 0 auto; }
+
+  /* Container */
+  .container { max-width: 900px; margin: 0 auto; padding: 10px 20px 60px; }
+
+  /* Grid */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  @media (max-width: 700px) { .contact-grid { grid-template-columns: 1fr; } }
+
+  /* Panel */
+  .sci-panel {
+    background: var(--bg-panel); backdrop-filter: blur(8px);
+    border: 1px solid var(--border-cyan); border-radius: 14px;
+    box-shadow: inset 0 0 20px rgba(0,243,255,0.04), 0 0 15px rgba(0,0,0,0.5);
+    padding: 30px 32px; position: relative; transition: box-shadow 0.3s;
+  }
+  .sci-panel:hover { box-shadow: inset 0 0 25px rgba(0,243,255,0.08), 0 0 20px rgba(0,243,255,0.15); }
+  .sci-panel::before {
+    content: ''; position: absolute; top: -1px; left: -1px;
+    width: 16px; height: 16px;
+    border-top: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan);
+    border-top-left-radius: 14px;
+  }
+  .sci-panel::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 16px; height: 16px;
+    border-bottom: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan);
+    border-bottom-right-radius: 14px;
+  }
+
+  /* Contact card */
+  .contact-card {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    gap: 14px; padding: 10px 0;
+  }
+  .contact-icon-wrap {
+    width: 64px; height: 64px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid; transition: 0.3s;
+  }
+  .contact-icon-wrap.email  { border-color: #ea4335; background: rgba(234,67,53,0.1); }
+  .contact-icon-wrap.github { border-color: #fff; background: rgba(255,255,255,0.07); }
+  .contact-icon-wrap.insta  {
+    border-color: #e1306c;
+    background: radial-gradient(circle at 30% 107%, rgba(253,244,151,.15) 0%, rgba(253,89,73,.15) 45%, rgba(214,36,159,.15) 60%, rgba(40,90,235,.15) 90%);
+  }
+  .contact-icon-wrap.linkedin { border-color: #0a66c2; background: rgba(10,102,194,0.1); }
+
+  .sci-panel:hover .contact-icon-wrap.email  { box-shadow: 0 0 18px rgba(234,67,53,0.5); }
+  .sci-panel:hover .contact-icon-wrap.github { box-shadow: 0 0 18px rgba(255,255,255,0.3); }
+  .sci-panel:hover .contact-icon-wrap.insta  { box-shadow: 0 0 18px rgba(225,48,108,0.5); }
+  .sci-panel:hover .contact-icon-wrap.linkedin { box-shadow: 0 0 18px rgba(10,102,194,0.5); }
+
+  .contact-label {
+    font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700;
+    letter-spacing: 2px; color: #fff; text-transform: uppercase;
+  }
+  .contact-desc { font-size: 13px; color: #888; line-height: 1.5; }
+  .contact-link {
+    display: inline-block; margin-top: 4px;
+    padding: 9px 22px; border-radius: 6px; font-size: 13px; font-weight: 600;
+    font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; cursor: pointer;
+    transition: 0.3s; text-decoration: none; text-transform: uppercase;
+  }
+  .contact-link.email   { background: rgba(234,67,53,0.15);  border: 1px solid rgba(234,67,53,0.4);  color: #ea4335; }
+  .contact-link.github  { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.25); color: #fff; }
+  .contact-link.insta   { background: rgba(225,48,108,0.12); border: 1px solid rgba(225,48,108,0.4); color: #e1306c; }
+  .contact-link.linkedin { background: rgba(10,102,194,0.12); border: 1px solid rgba(10,102,194,0.4); color: #5ab0ff; }
+
+  .contact-link.email:hover   { background: rgba(234,67,53,0.28);  box-shadow: 0 0 14px rgba(234,67,53,0.4); }
+  .contact-link.github:hover  { background: rgba(255,255,255,0.14); box-shadow: 0 0 14px rgba(255,255,255,0.2); }
+  .contact-link.insta:hover   { background: rgba(225,48,108,0.25); box-shadow: 0 0 14px rgba(225,48,108,0.4); }
+  .contact-link.linkedin:hover { background: rgba(10,102,194,0.25); box-shadow: 0 0 14px rgba(10,102,194,0.4); }
+
+  /* Write a message panel */
+  .msg-panel-title {
+    font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700;
+    letter-spacing: 2px; color: #fff; text-transform: uppercase;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+    padding-bottom: 12px; border-bottom: 1px solid rgba(0,243,255,0.15);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .form-group label { font-size: 12px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
+  .form-group input, .form-group textarea, .form-group select {
+    background: rgba(0,0,0,0.4); border: 1px solid rgba(0,243,255,0.2);
+    color: #fff; border-radius: 6px; padding: 10px 14px; font-size: 14px;
+    font-family: 'Inter', sans-serif; transition: 0.3s; outline: none;
+    resize: vertical;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,243,255,0.2);
+  }
+  .form-group select option { background: #0a0a1e; }
+  .btn-send {
+    width: 100%; padding: 12px; background: linear-gradient(135deg, rgba(0,243,255,0.15), rgba(181,0,255,0.15));
+    border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
+    font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700;
+    letter-spacing: 2px; border-radius: 8px; cursor: pointer; transition: 0.3s;
+    text-transform: uppercase; margin-top: 4px;
+  }
+  .btn-send:hover { background: linear-gradient(135deg, rgba(0,243,255,0.25), rgba(181,0,255,0.25)); box-shadow: 0 0 20px rgba(0,243,255,0.3); }
+  .send-note { text-align: center; font-size: 12px; color: #555; margin-top: 10px; }
+
+  /* Footer */
+  .hud-footer {
+    margin-top: 60px; border-top: 1px solid rgba(0,243,255,0.25);
+    background: linear-gradient(180deg, rgba(7,5,18,0.2) 0%, #000 100%);
+    padding: 30px 60px 20px; font-size: 13px;
+    backdrop-filter: blur(10px); text-align: center; color: #666;
+  }
+  a { color: var(--neon-cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Success toast */
+  .toast {
+    position: fixed; bottom: 30px; right: 30px;
+    background: rgba(0,255,136,0.15); border: 1px solid var(--neon-green);
+    color: var(--neon-green); padding: 12px 22px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; letter-spacing: 1px;
+    box-shadow: 0 0 20px rgba(0,255,136,0.3);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s; z-index: 9999;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="light-stream stream-1"></div>
+<div class="light-stream stream-2"></div>
+
+<!-- HEADER -->
+<header class="hud-header">
+  <div class="brand-wrapper">
+    <div class="user-avatar-hex">
+      <span style="font-size:18px;font-weight:700;color:#fff;">AI</span>
+    </div>
+    <div class="brand-title"><h1>INTERNSHIP FINDER</h1></div>
+  </div>
+  <a href="/user-dashboard" class="btn-back">RETURN TO DASHBOARD</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>CONTACT US</h1>
+  <p>Have questions, feedback, or just want to say hello? Reach out to our development team through any of the channels below.</p>
+</div>
+
+<div class="container">
+
+  <!-- Contact Cards -->
+  <div class="contact-grid">
+
+    <!-- Email -->
+    <div class="sci-panel">
+      <div class="contact-card">
+        <div class="contact-icon-wrap email">
+          <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24" style="color:#ea4335"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </div>
+        <div class="contact-label">Email Us</div>
+        <div class="contact-desc">Write to us directly.<br>We respond within 24–48 hours.</div>
+        <a href="mailto:friendsgamingproject438@gmail.com?subject=Internship%20Finder%20AI%20-%20Enquiry&body=Hello%20Team%2C%0A%0AI%20am%20reaching%20out%20regarding%20the%20Internship%20Finder%20AI%20Agent.%0A%0A"
+           class="contact-link email">OPEN EMAIL</a>
+        <div style="font-size:11px;color:#555;margin-top:4px;">friendsgamingproject438@gmail.com</div>
+      </div>
+    </div>
+
+    <!-- GitHub -->
+    <div class="sci-panel">
+      <div class="contact-card">
+        <div class="contact-icon-wrap github">
+          <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24" style="color:#fff"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-desc">Explore the source code,<br>raise issues, or contribute.</div>
+        <a href="https://github.com/SUBHRADIP-ADHIKARI7/AI-INTERNSHIP-PROJECT" target="_blank" class="contact-link github">VIEW REPO</a>
+        <div style="font-size:11px;color:#555;margin-top:4px;">SUBHRADIP-ADHIKARI7 / AI-INTERNSHIP-PROJECT</div>
+      </div>
+    </div>
+
+    <!-- Instagram -->
+    <div class="sci-panel">
+      <div class="contact-card">
+        <div class="contact-icon-wrap insta">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <defs>
+              <linearGradient id="ig-c" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f09433"/><stop offset=".25" stop-color="#e6683c"/>
+                <stop offset=".5" stop-color="#dc2743"/><stop offset=".75" stop-color="#cc2366"/>
+                <stop offset="1" stop-color="#bc1888"/>
+              </linearGradient>
+            </defs>
+            <path d="M7.75 2h8.5C19.425 2 22 4.575 22 7.75v8.5c0 3.175-2.575 5.75-5.75 5.75h-8.5C4.575 22 2 19.425 2 16.25v-8.5C2 4.575 4.575 2 7.75 2z" fill="url(#ig-c)"/>
+            <path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8.25a3.25 3.25 0 110-6.5 3.25 3.25 0 010 6.5z" fill="#fff"/>
+            <circle cx="17.25" cy="6.75" r="1.25" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="contact-label">Instagram</div>
+        <div class="contact-desc">Follow us for project<br>updates and announcements.</div>
+        <a href="https://www.instagram.com/aspdcodex" target="_blank" class="contact-link insta">FOLLOW US</a>
+        <div style="font-size:11px;color:#555;margin-top:4px;">@aspdcodex</div>
+      </div>
+    </div>
+
+    <!-- LinkedIn / Academic -->
+    <div class="sci-panel">
+      <div class="contact-card">
+        <div class="contact-icon-wrap linkedin">
+          <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24" style="color:#0a66c2">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </div>
+        <div class="contact-label">Academic</div>
+        <div class="contact-desc">This is an academic project.<br>Connect for collaboration.</div>
+        <a href="mailto:friendsgamingproject438@gmail.com?subject=Collaboration%20Inquiry&body=Hello%2C%0A%0AI%20would%20like%20to%20collaborate%20on%20the%20Internship%20Finder%20AI%20project.%0A%0A"
+           class="contact-link linkedin">COLLABORATE</a>
+        <div style="font-size:11px;color:#555;margin-top:4px;">Academic Project — 2026</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Write a Message Panel -->
+  <div class="sci-panel">
+    <div class="msg-panel-title">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--neon-cyan)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      SEND US A MESSAGE
+    </div>
+    <form id="contactForm" onsubmit="sendMessage(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="msgName" placeholder="e.g. Rahul Sharma" required>
+        </div>
+        <div class="form-group">
+          <label>Your Email</label>
+          <input type="email" id="msgEmail" placeholder="you@example.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <select id="msgSubject">
+          <option value="General Enquiry">General Enquiry</option>
+          <option value="Bug Report">Bug Report</option>
+          <option value="Feature Request">Feature Request</option>
+          <option value="Collaboration">Collaboration / Partnership</option>
+          <option value="Data Deletion Request">Data Deletion Request</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="msgBody" rows="5" placeholder="Write your message here..." required></textarea>
+      </div>
+      <button type="submit" class="btn-send">
+        &#128232; SEND VIA EMAIL CLIENT
+      </button>
+      <div class="send-note">Clicking Send will open your default email app pre-filled with your message.</div>
+    </form>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">✔ Email client opened successfully!</div>
+
+<footer class="hud-footer">
+  <p>&copy; 2026 Internship Finder AI Agent. All Rights Reserved. &nbsp;|&nbsp;
+    <a href="/privacy-policy">Privacy Policy</a> &nbsp;|&nbsp;
+    <a href="/terms-and-conditions">Terms &amp; Conditions</a> &nbsp;|&nbsp;
+    <a href="/about-us">About Us</a>
+  </p>
+</footer>
+
+<script>
+  function sendMessage(e) {
+    e.preventDefault();
+    const name    = document.getElementById('msgName').value.trim();
+    const email   = document.getElementById('msgEmail').value.trim();
+    const subject = document.getElementById('msgSubject').value;
+    const body    = document.getElementById('msgBody').value.trim();
+
+    const toEmail = 'friendsgamingproject438@gmail.com';
+    const subjectEnc = encodeURIComponent(`[Internship Finder AI] ${subject}`);
+    const bodyEnc = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${body}`
+    );
+    window.location.href = `mailto:${toEmail}?subject=${subjectEnc}&body=${bodyEnc}`;
+
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+</script>
+</body>
+</html>
